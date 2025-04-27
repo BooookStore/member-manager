@@ -6,7 +6,7 @@ class EmailAddressValidator {
         return if (emailAddress.contains("@")) {
             Valid()
         } else {
-            Invalid()
+            Invalid.fromSingleMessage("invalid email address [$emailAddress] not contain @")
         }
     }
 

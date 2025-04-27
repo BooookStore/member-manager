@@ -2,6 +2,7 @@ package bookstore.playground.domain.validator
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.fail
 
 class ValidatorTest {
 
@@ -9,14 +10,22 @@ class ValidatorTest {
     fun validEmailAddress() {
         val validator = EmailAddressValidator()
         val result = validator.validate("aaa@example.com")
-        assertEquals(true, result.isValid())
+
+        when (result) {
+            is Invalid -> fail("Expected Valid but got Invalid")
+            is Valid -> Unit
+        }
     }
 
     @Test
     fun invalidEmailAddress() {
         val validator = EmailAddressValidator()
         val result = validator.validate("aaa")
-        assertEquals(false, result.isValid())
+
+        when (result) {
+            is Valid -> fail("Expected Invalid but got Valid")
+            is Invalid -> assertEquals(listOf("invalid email address [aaa] not contain @"), result.messages)
+        }
     }
 
 }

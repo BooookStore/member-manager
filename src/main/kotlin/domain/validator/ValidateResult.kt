@@ -1,19 +1,13 @@
 package bookstore.playground.domain.validator
 
-sealed interface ValidateResult {
+sealed interface ValidateResult
 
-    fun isValid(): Boolean
+class Valid : ValidateResult
 
-}
+data class Invalid(val messages: List<String>) : ValidateResult {
 
-class Valid : ValidateResult {
-
-    override fun isValid(): Boolean = true
-
-}
-
-class Invalid : ValidateResult {
-
-    override fun isValid(): Boolean = false
+    companion object {
+        fun fromSingleMessage(message: String): Invalid = Invalid(listOf(message))
+    }
 
 }
