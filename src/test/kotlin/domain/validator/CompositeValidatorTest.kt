@@ -6,13 +6,21 @@ import kotlin.test.fail
 
 class CompositeValidatorTest {
 
+    val alwaysValidValidator = object : Validator {
+        override fun validate(value: String) = Valid()
+    }
+
+    val alwaysInvalidValidator = object : Validator {
+        override fun validate(value: String) = Invalid(listOf("invalid"))
+    }
+
     @Test
     fun multipleValidations() {
         val validator = CompositeValidator(
-            ContainsAySymbolEmailAddressValidator(),
-            EmailAddressDomainValidator("example.com")
+            alwaysValidValidator,
+            alwaysValidValidator
         )
-        val result = validator.validate("aaa@example.com")
+        val result = validator.validate("dummy value")
 
         when (result) {
             is Valid -> Unit
@@ -23,37 +31,28 @@ class CompositeValidatorTest {
     @Test
     fun oneInvalidValidation() {
         val validator = CompositeValidator(
-            ContainsAySymbolEmailAddressValidator(),
-            EmailAddressDomainValidator("example.com")
+            alwaysValidValidator,
+            alwaysInvalidValidator
         )
-        val result = validator.validate("aaa@xample.com")
+        val result = validator.validate("dummy value")
 
         when (result) {
             is Valid -> fail("Expected Invalid but got Valid")
-            is Invalid -> assertEquals(
-                listOf("invalid email address [aaa@xample.com] not match domain [example.com]"),
-                result.messages
-            )
+            is Invalid -> assertEquals(listOf("invalid"), result.messages)
         }
     }
 
     @Test
     fun multipleInvalidValidations() {
         val validator = CompositeValidator(
-            ContainsAySymbolEmailAddressValidator(),
-            EmailAddressDomainValidator("example.com")
+            alwaysInvalidValidator,
+            alwaysInvalidValidator
         )
-        val result = validator.validate("aaa")
+        val result = validator.validate("dummy value")
 
         when (result) {
             is Valid -> fail("Expected Invalid but got Valid")
-            is Invalid -> assertEquals(
-                listOf(
-                    "invalid email address [aaa] not contain '@' symbol",
-                    "invalid email address [aaa] not match domain [example.com]"
-                ),
-                result.messages
-            )
+            is Invalid -> assertEquals(listOf("invalid", "invalid"), result.messages)
         }
     }
 
