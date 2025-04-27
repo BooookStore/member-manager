@@ -1,8 +1,8 @@
 package bookstore.playground.domain.validator
 
-class EmailAddressDomainValidator(val domain: String) {
+class EmailAddressDomainValidator(val domain: String) : Validator {
 
-    fun validate(emailAddress: String): ValidateResult {
+    override fun validate(emailAddress: String): ValidationResult {
         return if (emailAddress.endsWith("@$domain")) {
             Valid()
         } else {

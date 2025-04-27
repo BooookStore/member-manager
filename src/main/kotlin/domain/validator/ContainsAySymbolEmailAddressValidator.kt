@@ -1,8 +1,8 @@
 package bookstore.playground.domain.validator
 
-class ContainsAySymbolEmailAddressValidator {
+class ContainsAySymbolEmailAddressValidator : Validator {
 
-    fun validate(emailAddress: String): ValidateResult {
+    override fun validate(emailAddress: String): ValidationResult {
         return if (emailAddress.contains("@")) {
             Valid()
         } else {
