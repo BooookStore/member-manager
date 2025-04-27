@@ -4,7 +4,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.fail
 
-class ValidatorTest {
+class EmailAddressValidatorTest {
 
     @Test
     fun validEmailAddress() {
