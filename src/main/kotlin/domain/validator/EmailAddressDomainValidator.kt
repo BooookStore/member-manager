@@ -6,7 +6,7 @@ class EmailAddressDomainValidator(val domain: String) : Validator {
         return if (emailAddress.endsWith("@$domain")) {
             Valid()
         } else {
-            Invalid.fromSingleMessage("invalid email address [$emailAddress] does not match domain [$domain]")
+            Invalid.fromSingleMessage("invalid email address [$emailAddress] not match domain [$domain]")
         }
     }
 

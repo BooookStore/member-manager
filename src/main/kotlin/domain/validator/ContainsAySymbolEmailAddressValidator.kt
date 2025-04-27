@@ -6,7 +6,7 @@ class ContainsAySymbolEmailAddressValidator : Validator {
         return if (emailAddress.contains("@")) {
             Valid()
         } else {
-            Invalid.fromSingleMessage("invalid email address [$emailAddress] not contain @")
+            Invalid.fromSingleMessage("invalid email address [$emailAddress] not contain '@' symbol")
         }
     }
 

@@ -24,7 +24,7 @@ class ContainsAySymbolEmailAddressValidatorTest {
 
         when (result) {
             is Valid -> fail("Expected Invalid but got Valid")
-            is Invalid -> assertEquals(listOf("invalid email address [aaa] not contain @"), result.messages)
+            is Invalid -> assertEquals(listOf("invalid email address [aaa] not contain '@' symbol"), result.messages)
         }
     }
 
