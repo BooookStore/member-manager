@@ -11,3 +11,9 @@ class Valid : ValidateResult {
     override fun isValid(): Boolean = true
 
 }
+
+class Invalid : ValidateResult {
+
+    override fun isValid(): Boolean = false
+
+}
