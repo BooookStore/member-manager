@@ -11,7 +11,7 @@
         <kotlin.code.style>official</kotlin.code.style>
         <exposed_version>0.61.0</exposed_version>
         <h2_version>2.3.232</h2_version>
-        <kotlin_version>2.1.10</kotlin_version>
+        <kotlin_version>2.1.20</kotlin_version>
         <ktor_version>3.1.2</ktor_version>
         <logback_version>1.4.14</logback_version>
         <postgres_version>42.7.5</postgres_version>
@@ -81,7 +81,7 @@
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-test-junit</artifactId>
+            <artifactId>kotlin-test-junit5</artifactId>
             <version>${kotlin_version}</version>
             <scope>test</scope>
         </dependency>
@@ -90,6 +90,11 @@
             <artifactId>kotlinx-coroutines-debug</artifactId>
             <version>1.6.4</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.ktor</groupId>
+            <artifactId>ktor-client-content-negotiation-jvm</artifactId>
+            <version>${ktor_version}</version>
         </dependency>
     </dependencies>
     <build>
@@ -146,15 +151,7 @@
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <version>${kotlin_version}</version>
-                <executions>
-                    <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <extensions>true</extensions>
                 <configuration>
                     <compilerPlugins>
                         <plugin>kotlinx-serialization</plugin>

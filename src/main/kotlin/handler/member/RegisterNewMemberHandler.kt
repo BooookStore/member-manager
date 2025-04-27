@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ReceiveNewMember(val emailAddress: String, val name: String)
 
-val registerNewMemberHandler: RoutingHandler = {
+suspend fun RoutingContext.registerNewMemberHandler() {
     val receiveNewMember = call.receive<ReceiveNewMember>()
     call.application.environment.log.info("Received new member registration: $receiveNewMember")
 

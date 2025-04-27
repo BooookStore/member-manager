@@ -6,6 +6,6 @@ import io.ktor.server.routing.*
 
 fun Application.configureRouting() {
     routing {
-        post("/members", registerNewMemberHandler)
+        post("/members") { registerNewMemberHandler() }
     }
 }
