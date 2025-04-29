@@ -29,7 +29,7 @@ class EmailAddressValidatorTest {
 
             when (result) {
                 is Valid -> fail("Expected Invalid but got Valid")
-                is Invalid -> assertEquals(listOf("invalid email address [aaa] not contain '@' symbol"), result.messages)
+                is Invalid -> assertEquals(listOf("invalid email address 'aaa' not contain '@' symbol"), result.messages)
             }
         }
 
@@ -56,7 +56,7 @@ class EmailAddressValidatorTest {
 
             when (result) {
                 is Valid -> fail("Expected Invalid but got Valid")
-                is Invalid -> assertEquals(listOf("invalid email address [aaa@xample.com] not match domain [example.com]"), result.messages)
+                is Invalid -> assertEquals(listOf("invalid email address 'aaa@xample.com' not match domain 'example.com'"), result.messages)
             }
         }
 

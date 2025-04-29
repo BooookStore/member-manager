@@ -8,7 +8,7 @@ class EmailAddressDomainValidator(private val domain: String) : Validator<Unvali
         return if (value.rawEmailAddress.endsWith("@$domain")) {
             Valid()
         } else {
-            Invalid.fromSingleMessage("invalid email address [${value.rawEmailAddress}] not match domain [$domain]")
+            Invalid.fromSingleMessage("invalid email address '${value.rawEmailAddress}' not match domain '$domain'")
         }
     }
 }
@@ -19,7 +19,7 @@ object ContainsAySymbolEmailAddressValidator : Validator<UnvalidatedEmailAddress
         return if (value.rawEmailAddress.contains("@")) {
             Valid()
         } else {
-            Invalid.fromSingleMessage("invalid email address [${value.rawEmailAddress}] not contain '@' symbol")
+            Invalid.fromSingleMessage("invalid email address '${value.rawEmailAddress}' not contain '@' symbol")
         }
     }
 

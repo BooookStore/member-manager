@@ -59,8 +59,8 @@ class RegisterNewMemberTest {
             """
                 {
                     "messages": [
-                        "invalid email address [invalid-email] not contain '@' symbol",
-                        "invalid email address [invalid-email] not match domain [example.com]"
+                        "invalid email address 'invalid-email' not contain '@' symbol",
+                        "invalid email address 'invalid-email' not match domain 'example.com'"
                     ]
                 }
             """ should equalJson(bodyAsText())
