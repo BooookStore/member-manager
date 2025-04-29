@@ -13,7 +13,7 @@ class EmailAddressDomainValidator(private val domain: String) : Validator<Unvali
     }
 }
 
-object ContainsAySymbolEmailAddressValidator : Validator<UnvalidatedEmailAddress> {
+object EmailAddressContainsAtSymbolValidator : Validator<UnvalidatedEmailAddress> {
 
     override fun validate(value: UnvalidatedEmailAddress): ValidationResult {
         return if (value.rawEmailAddress.contains("@")) {

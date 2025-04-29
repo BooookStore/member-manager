@@ -23,7 +23,7 @@ suspend fun RoutingContext.registerNewMemberHandler() {
 
     val unvalidatedEmailAddress = UnvalidatedEmailAddress(newMember.emailAddress)
 
-    val validator = CompositeValidator(ContainsAySymbolEmailAddressValidator, EmailAddressDomainValidator("example.com"))
+    val validator = CompositeValidator(EmailAddressContainsAtSymbolValidator, EmailAddressDomainValidator("example.com"))
     val validationResult = validator.validate(unvalidatedEmailAddress)
 
     when (validationResult) {

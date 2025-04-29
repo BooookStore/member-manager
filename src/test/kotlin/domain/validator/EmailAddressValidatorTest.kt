@@ -13,7 +13,7 @@ class EmailAddressValidatorTest {
 
         @Test
         fun `include@EmailAddress`() {
-            val validator = ContainsAySymbolEmailAddressValidator
+            val validator = EmailAddressContainsAtSymbolValidator
             val result = validator.validate(UnvalidatedEmailAddress("aaa@example.com"))
 
             when (result) {
@@ -24,7 +24,7 @@ class EmailAddressValidatorTest {
 
         @Test
         fun `notInclude@EmailAddress`() {
-            val validator = ContainsAySymbolEmailAddressValidator
+            val validator = EmailAddressContainsAtSymbolValidator
             val result = validator.validate(UnvalidatedEmailAddress("aaa"))
 
             when (result) {
