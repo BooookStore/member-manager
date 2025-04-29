@@ -25,6 +25,9 @@ suspend fun RoutingContext.registerNewMemberHandler() {
 
     when (validationResult) {
         is Valid -> call.respond(HttpStatusCode.OK)
-        is Invalid -> call.respond(HttpStatusCode.BadRequest, RegisterNewMemberBadRequestResponse(validationResult.messages))
+        is Invalid -> {
+            logger.info("Received new member with invalid email address: ${validationResult.messages}")
+            call.respond(HttpStatusCode.BadRequest, RegisterNewMemberBadRequestResponse(validationResult.messages))
+        }
     }
 }
