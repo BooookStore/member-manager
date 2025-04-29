@@ -1,5 +1,6 @@
 package bookstore.playground.handler.member
 
+import bookstore.playground.domain.UnvalidatedEmailAddress
 import bookstore.playground.domain.validator.*
 import io.ktor.http.*
 import io.ktor.server.request.*
@@ -20,8 +21,10 @@ suspend fun RoutingContext.registerNewMemberHandler() {
     val newMember = call.receive<RegisterNewMemberRequest>()
     logger.info("Received new member request: $newMember")
 
+    val unvalidatedEmailAddress = UnvalidatedEmailAddress(newMember.emailAddress)
+
     val validator = CompositeValidator(ContainsAySymbolEmailAddressValidator, EmailAddressDomainValidator("example.com"))
-    val validationResult = validator.validate(newMember.emailAddress)
+    val validationResult = validator.validate(unvalidatedEmailAddress)
 
     when (validationResult) {
         is Valid -> call.respond(HttpStatusCode.OK)

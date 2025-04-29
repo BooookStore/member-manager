@@ -1,7 +1,7 @@
 package bookstore.playground.domain.validator
 
-interface Validator {
+interface Validator<T> {
 
-    fun validate(value: String): ValidationResult
+    fun validate(value: T): ValidationResult
 
 }

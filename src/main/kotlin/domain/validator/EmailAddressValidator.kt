@@ -1,24 +1,25 @@
 package bookstore.playground.domain.validator
 
-class EmailAddressDomainValidator(private val domain: String) : Validator {
+import bookstore.playground.domain.UnvalidatedEmailAddress
 
-    override fun validate(value: String): ValidationResult {
-        return if (value.endsWith("@$domain")) {
+class EmailAddressDomainValidator(private val domain: String) : Validator<UnvalidatedEmailAddress> {
+
+    override fun validate(value: UnvalidatedEmailAddress): ValidationResult {
+        return if (value.rawEmailAddress.endsWith("@$domain")) {
             Valid()
         } else {
-            Invalid.fromSingleMessage("invalid email address [$value] not match domain [$domain]")
+            Invalid.fromSingleMessage("invalid email address [${value.rawEmailAddress}] not match domain [$domain]")
         }
     }
-
 }
 
-object ContainsAySymbolEmailAddressValidator : Validator {
+object ContainsAySymbolEmailAddressValidator : Validator<UnvalidatedEmailAddress> {
 
-    override fun validate(value: String): ValidationResult {
-        return if (value.contains("@")) {
+    override fun validate(value: UnvalidatedEmailAddress): ValidationResult {
+        return if (value.rawEmailAddress.contains("@")) {
             Valid()
         } else {
-            Invalid.fromSingleMessage("invalid email address [$value] not contain '@' symbol")
+            Invalid.fromSingleMessage("invalid email address [${value.rawEmailAddress}] not contain '@' symbol")
         }
     }
 

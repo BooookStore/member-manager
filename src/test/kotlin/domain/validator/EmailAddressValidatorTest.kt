@@ -1,5 +1,6 @@
 package bookstore.playground.domain.validator
 
+import bookstore.playground.domain.UnvalidatedEmailAddress
 import org.junit.jupiter.api.Nested
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -13,7 +14,7 @@ class EmailAddressValidatorTest {
         @Test
         fun `include@EmailAddress`() {
             val validator = ContainsAySymbolEmailAddressValidator
-            val result = validator.validate("aaa@example.com")
+            val result = validator.validate(UnvalidatedEmailAddress("aaa@example.com"))
 
             when (result) {
                 is Valid -> Unit
@@ -24,7 +25,7 @@ class EmailAddressValidatorTest {
         @Test
         fun `notInclude@EmailAddress`() {
             val validator = ContainsAySymbolEmailAddressValidator
-            val result = validator.validate("aaa")
+            val result = validator.validate(UnvalidatedEmailAddress("aaa"))
 
             when (result) {
                 is Valid -> fail("Expected Invalid but got Valid")
@@ -40,7 +41,7 @@ class EmailAddressValidatorTest {
         @Test
         fun validDomainEmailAddress() {
             val validator = EmailAddressDomainValidator("example.com")
-            val result = validator.validate("aaa@example.com")
+            val result = validator.validate(UnvalidatedEmailAddress("aaa@example.com"))
 
             when (result) {
                 is Valid -> Unit
@@ -51,7 +52,7 @@ class EmailAddressValidatorTest {
         @Test
         fun invalidDomainEmailAddress() {
             val validator = EmailAddressDomainValidator("example.com")
-            val result = validator.validate("aaa@xample.com")
+            val result = validator.validate(UnvalidatedEmailAddress("aaa@xample.com"))
 
             when (result) {
                 is Valid -> fail("Expected Invalid but got Valid")

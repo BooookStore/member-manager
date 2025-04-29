@@ -6,11 +6,11 @@ import kotlin.test.fail
 
 class CompositeValidatorTest {
 
-    val alwaysValidValidator = object : Validator {
+    val alwaysValidValidator = object : Validator<String> {
         override fun validate(value: String) = Valid()
     }
 
-    val alwaysInvalidValidator = object : Validator {
+    val alwaysInvalidValidator = object : Validator<String> {
         override fun validate(value: String) = Invalid(listOf("invalid"))
     }
 
