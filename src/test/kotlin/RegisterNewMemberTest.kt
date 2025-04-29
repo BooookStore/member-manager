@@ -41,4 +41,19 @@ class RegisterNewMemberTest {
         }
     }
 
+    @Test
+    fun invalidEmailAddressReturnedBadRequest() = testApplicationWithCommonSetup { client ->
+        client.post("/members") {
+            contentType(ContentType.Application.Json)
+            setBody("""
+                {
+                    "name": "John Doe",
+                    "emailAddress": "invalid-email"
+                }
+            """.trimIndent())
+        }.apply {
+            assertEquals(HttpStatusCode.BadRequest, status)
+        }
+    }
+
 }
