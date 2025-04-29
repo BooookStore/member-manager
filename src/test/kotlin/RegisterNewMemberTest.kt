@@ -1,11 +1,14 @@
 package bookstore.playground
 
+import io.kotest.matchers.should
 import io.ktor.client.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.testing.*
+import net.javacrumbs.jsonunit.kotest.equalJson
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -53,6 +56,14 @@ class RegisterNewMemberTest {
             """.trimIndent())
         }.apply {
             assertEquals(HttpStatusCode.BadRequest, status)
+            """
+                {
+                    "messages": [
+                        "invalid email address [invalid-email] not contain '@' symbol",
+                        "invalid email address [invalid-email] not match domain [example.com]"
+                    ]
+                }
+            """ should equalJson(bodyAsText())
         }
     }
 
