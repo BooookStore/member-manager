@@ -1,6 +1,6 @@
 package bookstore.playground
 
-import bookstore.playground.handler.member.ReceiveNewMember
+import io.ktor.client.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -9,10 +9,8 @@ import io.ktor.server.testing.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class RegisterNewMemberTest {
-
-    @Test
-    fun testRoot() = testApplication {
+fun testApplicationWithCommonSetup(block: suspend ApplicationTestBuilder.(client: HttpClient) -> Unit) =
+    testApplication {
         application {
             module()
         }
@@ -23,9 +21,21 @@ class RegisterNewMemberTest {
             }
         }
 
+        block(client)
+    }
+
+class RegisterNewMemberTest {
+
+    @Test
+    fun testRoot() = testApplicationWithCommonSetup { client ->
         client.post("/members") {
             contentType(ContentType.Application.Json)
-            setBody(ReceiveNewMember("0001", "John Doe"))
+            setBody("""
+                {
+                    "name": "John Doe",
+                    "emailAddress": "john.done@example.com"
+                }
+            """.trimIndent())
         }.apply {
             assertEquals(HttpStatusCode.OK, status)
         }
