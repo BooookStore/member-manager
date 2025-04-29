@@ -18,7 +18,7 @@ suspend fun RoutingContext.registerNewMemberHandler() {
     val receiveNewMember = call.receive<ReceiveNewMember>()
     call.application.environment.log.info("Received new member registration: $receiveNewMember")
 
-    val validator = CompositeValidator(ContainsAySymbolEmailAddressValidator(), EmailAddressDomainValidator("example.com"))
+    val validator = CompositeValidator(ContainsAySymbolEmailAddressValidator, EmailAddressDomainValidator("example.com"))
     val validationResult = validator.validate(receiveNewMember.emailAddress)
 
     when (validationResult) {
