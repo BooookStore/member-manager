@@ -2,7 +2,7 @@ package bookstore.playground.domain.validator
 
 sealed interface ValidationResult
 
-class Valid : ValidationResult
+object Valid : ValidationResult
 
 data class Invalid(val messages: List<String>) : ValidationResult {
 

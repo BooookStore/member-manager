@@ -7,7 +7,7 @@ import kotlin.test.fail
 class CompositeValidatorTest {
 
     val alwaysValidValidator = object : Validator<String> {
-        override fun validate(value: String) = Valid()
+        override fun validate(value: String) = Valid
     }
 
     val alwaysInvalidValidator = object : Validator<String> {
