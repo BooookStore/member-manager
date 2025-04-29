@@ -1,6 +1,6 @@
 package bookstore.playground.domain.validator
 
-import bookstore.playground.domain.UnvalidatedEmailAddress
+import bookstore.playground.handler.member.UnvalidatedEmailAddress
 import org.junit.jupiter.api.Nested
 import kotlin.test.Test
 import kotlin.test.assertEquals
