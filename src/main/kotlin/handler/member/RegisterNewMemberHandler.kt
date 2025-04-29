@@ -26,20 +26,18 @@ fun RegisterNewMemberRequest.toUnvalidatedMember(): UnvalidatedMember =
     )
 
 suspend fun RoutingContext.registerNewMemberHandler(
-    emailAddressValidator: Validator<UnvalidatedEmailAddress>
+    memberValidator: Validator<UnvalidatedMember>,
 ) {
     val newMemberRequest = call.receive<RegisterNewMemberRequest>()
     logger.info("Received new member request: $newMemberRequest")
 
     val unvalidatedMember = newMemberRequest.toUnvalidatedMember()
-    val unvalidatedEmailAddress = unvalidatedMember.unvalidatedEmailAddress
-
-    val validationResult = emailAddressValidator.validate(unvalidatedEmailAddress)
+    val validationResult = memberValidator.validate(unvalidatedMember)
 
     when (validationResult) {
         is Valid -> call.respond(HttpStatusCode.OK)
         is Invalid -> {
-            logger.info("Received new member with invalid email address: ${validationResult.messages}")
+            logger.info("Received new member is invalid: ${validationResult.messages}")
             call.respond(HttpStatusCode.BadRequest, RegisterNewMemberBadRequestResponse(validationResult.messages))
         }
     }
