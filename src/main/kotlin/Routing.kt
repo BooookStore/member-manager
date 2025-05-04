@@ -1,6 +1,6 @@
 package bookstore.playground
 
-import bookstore.playground.domain.unvalidated.member.UnvalidatedMember
+import bookstore.playground.domain.UnvalidatedMember
 import bookstore.playground.domain.validator.CompositeValidator
 import bookstore.playground.domain.validator.EmailAddressContainsAtSymbolValidator
 import bookstore.playground.domain.validator.EmailAddressDomainValidator

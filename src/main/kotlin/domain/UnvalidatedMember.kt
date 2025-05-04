@@ -1,4 +1,4 @@
-package bookstore.playground.domain.unvalidated.member
+package bookstore.playground.domain
 
 data class UnvalidatedMember(val unvalidatedName: UnvalidatedName, val unvalidatedEmailAddress: UnvalidatedEmailAddress)
 

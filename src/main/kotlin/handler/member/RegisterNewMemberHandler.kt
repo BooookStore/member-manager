@@ -1,8 +1,8 @@
 package bookstore.playground.handler.member
 
-import bookstore.playground.domain.unvalidated.member.UnvalidatedEmailAddress
-import bookstore.playground.domain.unvalidated.member.UnvalidatedMember
-import bookstore.playground.domain.unvalidated.member.UnvalidatedName
+import bookstore.playground.domain.UnvalidatedEmailAddress
+import bookstore.playground.domain.UnvalidatedMember
+import bookstore.playground.domain.UnvalidatedName
 import bookstore.playground.domain.validator.*
 import io.ktor.http.*
 import io.ktor.server.request.*

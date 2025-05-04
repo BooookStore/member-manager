@@ -1,6 +1,6 @@
 package bookstore.playground.domain.validator
 
-import bookstore.playground.domain.unvalidated.member.UnvalidatedEmailAddress
+import bookstore.playground.domain.UnvalidatedEmailAddress
 
 class EmailAddressDomainValidator(private val domain: String) : Validator<UnvalidatedEmailAddress> {
 
