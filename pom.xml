@@ -16,7 +16,7 @@
         <logback_version>1.4.14</logback_version>
         <postgres_version>42.7.5</postgres_version>
         <slf4j_version>2.0.9</slf4j_version>
-        <arrow_version>2.1.0</arrow_version>
+        <arrow_version>2.1.1</arrow_version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <main.class>io.ktor.server.netty.EngineMain</main.class>
@@ -170,6 +170,7 @@
                 <version>${kotlin_version}</version>
                 <extensions>true</extensions>
                 <configuration>
+                    <jvmTarget>11</jvmTarget>
                     <compilerPlugins>
                         <plugin>kotlinx-serialization</plugin>
                     </compilerPlugins>
