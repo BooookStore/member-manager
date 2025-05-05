@@ -4,7 +4,6 @@ import arrow.core.Either.Left
 import arrow.core.Either.Right
 import arrow.core.nonEmptyListOf
 import bookstore.playground.domain.EmailAddress
-import bookstore.playground.domain.InvalidEmailAddress
 import bookstore.playground.domain.InvalidEmailAddress.Blank
 import bookstore.playground.domain.InvalidEmailAddress.InvalidDomain
 import bookstore.playground.domain.UnvalidatedEmailAddress
