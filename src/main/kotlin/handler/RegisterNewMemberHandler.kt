@@ -3,6 +3,7 @@ package bookstore.playground.handler
 import arrow.core.Either
 import arrow.core.NonEmptyList
 import bookstore.playground.domain.*
+import bookstore.playground.usecase.RegisterNewMemberError
 import bookstore.playground.usecase.registerNewMemberUsecase
 import io.ktor.http.*
 import io.ktor.server.request.*
@@ -30,15 +31,15 @@ suspend fun RoutingContext.registerNewMemberHandler() {
     logger.info("Received new member request: $newMemberRequest")
 
     val unvalidatedMember = newMemberRequest.toUnvalidatedMember()
-    val validationResult = registerNewMemberUsecase(unvalidatedMember)
+    val result = registerNewMemberUsecase(unvalidatedMember)
 
-    when (validationResult) {
+    when (result) {
         is Either.Right -> {
-            logger.info("Member created successfully: $validationResult")
+            logger.info("Member created successfully: $result")
             call.respond(HttpStatusCode.Companion.Created)
         }
         is Either.Left -> {
-            val messages = errorMessages(validationResult, unvalidatedMember)
+            val messages = errorMessages(result.value, unvalidatedMember)
             logger.warn("Member creation failed: $messages")
             call.respond(
                 HttpStatusCode.Companion.BadRequest,
@@ -48,20 +49,26 @@ suspend fun RoutingContext.registerNewMemberHandler() {
     }
 }
 
-private fun errorMessages(member: Either.Left<NonEmptyList<InvalidMember>>, unvalidatedMember: UnvalidatedMember): NonEmptyList<String> {
-    fun messageByInvalidMemberName(name: InvalidMember.InvalidMemberName): String = when (name.invalidName) {
-        InvalidName.Blank -> "invalid name '${unvalidatedMember.unvalidatedName.rawName}' is blank"
-    }
-
-    fun messageByInvalidMemberEmailAddress(address: InvalidMember.InvalidMemberEmailAddress): String = when (address.invalidEmailAddress) {
-        InvalidEmailAddress.Blank -> "invalid email address '${unvalidatedMember.unvalidatedEmailAddress.rawEmailAddress}' is blank"
-        InvalidEmailAddress.UnexpectedDomain -> "invalid email address '${unvalidatedMember.unvalidatedEmailAddress.rawEmailAddress}' not match domain 'example.com'"
-    }
-
-    return member.value.map {
-        when (it) {
-            is InvalidMember.InvalidMemberName -> messageByInvalidMemberName(it)
-            is InvalidMember.InvalidMemberEmailAddress -> messageByInvalidMemberEmailAddress(it)
+private fun errorMessages(error: RegisterNewMemberError, unvalidatedMember: UnvalidatedMember): NonEmptyList<String> {
+    fun messageByInvalidMemberName(name: InvalidMember.InvalidMemberName): String =
+        when (name.invalidName) {
+            InvalidName.Blank -> "invalid name '${unvalidatedMember.unvalidatedName.rawName}' is blank"
         }
+
+    fun messageByInvalidMemberEmailAddress(address: InvalidMember.InvalidMemberEmailAddress): String =
+        when (address.invalidEmailAddress) {
+            InvalidEmailAddress.Blank -> "invalid email address '${unvalidatedMember.unvalidatedEmailAddress.rawEmailAddress}' is blank"
+            InvalidEmailAddress.UnexpectedDomain -> "invalid email address '${unvalidatedMember.unvalidatedEmailAddress.rawEmailAddress}' not match domain 'example.com'"
+        }
+
+    fun messageByInvalidMemberError(error: RegisterNewMemberError.InvalidMemberError): NonEmptyList<String> = error.invalidMemberNel.map {
+            when (it) {
+                is InvalidMember.InvalidMemberName -> messageByInvalidMemberName(it)
+                is InvalidMember.InvalidMemberEmailAddress -> messageByInvalidMemberEmailAddress(it)
+            }
+        }
+
+    return when (error) {
+        is RegisterNewMemberError.InvalidMemberError -> messageByInvalidMemberError(error)
     }
 }
