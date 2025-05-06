@@ -36,7 +36,7 @@ data class Member private constructor(val name: Name, val emailAddress: EmailAdd
 
 sealed interface InvalidEmailAddress {
     object Blank : InvalidEmailAddress
-    object InvalidDomain : InvalidEmailAddress
+    object UnexpectedDomain : InvalidEmailAddress
 }
 
 @ConsistentCopyVisibility
@@ -48,7 +48,7 @@ data class EmailAddress private constructor(val rawEmailAddress: String) {
 
             zipOrAccumulate(
                 { ensure(rawEmailAddress.isNotBlank()) { InvalidEmailAddress.Blank } },
-                { ensure(rawEmailAddress.substringAfter("@") == "example.com") { InvalidEmailAddress.InvalidDomain } }
+                { ensure(rawEmailAddress.substringAfter("@") == "example.com") { InvalidEmailAddress.UnexpectedDomain } }
             ) { _, _ -> EmailAddress(rawEmailAddress) }
         }
     }

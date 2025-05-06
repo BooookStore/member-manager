@@ -57,7 +57,7 @@ class MemberTest {
             is Left -> member.value shouldBe nonEmptyListOf(
                 InvalidMember.InvalidMemberName(InvalidName.Blank),
                 InvalidMember.InvalidMemberEmailAddress(InvalidEmailAddress.Blank),
-                InvalidMember.InvalidMemberEmailAddress(InvalidEmailAddress.InvalidDomain)
+                InvalidMember.InvalidMemberEmailAddress(InvalidEmailAddress.UnexpectedDomain)
             )
             is Right -> fail("Expected a Either.Left, but got Either.Right")
         }
@@ -81,7 +81,7 @@ class MemberTest {
             val emailAddress = EmailAddress.create(UnvalidatedEmailAddress(""))
 
             when (emailAddress) {
-                is Left -> emailAddress.value shouldBe nonEmptyListOf(InvalidEmailAddress.Blank, InvalidEmailAddress.InvalidDomain
+                is Left -> emailAddress.value shouldBe nonEmptyListOf(InvalidEmailAddress.Blank, InvalidEmailAddress.UnexpectedDomain
                 )
                 is Right -> fail("Expected a Either.Left, but got Either.Right")
             }
@@ -92,7 +92,7 @@ class MemberTest {
             val emailAddress = EmailAddress.create(UnvalidatedEmailAddress("john.done@xample.com"))
 
             when (emailAddress) {
-                is Left -> emailAddress.value shouldBe nonEmptyListOf(InvalidEmailAddress.InvalidDomain)
+                is Left -> emailAddress.value shouldBe nonEmptyListOf(InvalidEmailAddress.UnexpectedDomain)
                 is Right -> fail("Expected a Either.Left, but got Either.Right")
             }
         }
@@ -102,7 +102,7 @@ class MemberTest {
             val emailAddress = EmailAddress.create(UnvalidatedEmailAddress("john.done"))
 
             when (emailAddress) {
-                is Left -> emailAddress.value shouldBe nonEmptyListOf(InvalidEmailAddress.InvalidDomain)
+                is Left -> emailAddress.value shouldBe nonEmptyListOf(InvalidEmailAddress.UnexpectedDomain)
                 is Right -> fail("Expected a Either.Left, but got Either.Right")
             }
         }
