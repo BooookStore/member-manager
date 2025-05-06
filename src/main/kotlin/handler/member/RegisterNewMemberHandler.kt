@@ -1,5 +1,7 @@
 package bookstore.playground.handler.member
 
+import arrow.core.Either
+import bookstore.playground.domain.Member
 import bookstore.playground.domain.UnvalidatedEmailAddress
 import bookstore.playground.domain.UnvalidatedMember
 import bookstore.playground.domain.UnvalidatedName
@@ -32,13 +34,15 @@ suspend fun RoutingContext.registerNewMemberHandler(
     logger.info("Received new member request: $newMemberRequest")
 
     val unvalidatedMember = newMemberRequest.toUnvalidatedMember()
-    val validationResult = memberValidator.validate(unvalidatedMember)
+    val member = Member.create(unvalidatedMember)
 
-    when (validationResult) {
-        is Valid -> call.respond(HttpStatusCode.OK)
-        is Invalid -> {
-            logger.info("Received new member is invalid: ${validationResult.messages}")
-            call.respond(HttpStatusCode.BadRequest, RegisterNewMemberBadRequestResponse(validationResult.messages))
+    when (member) {
+        is Either.Right -> {
+            logger.info("Member created successfully: $member")
+            call.respond(HttpStatusCode.Created)
+        }
+        is Either.Left -> {
+            TODO()
         }
     }
 }
