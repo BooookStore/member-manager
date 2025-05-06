@@ -2,18 +2,12 @@ package bookstore.playground.handler
 
 import arrow.core.Either
 import arrow.core.NonEmptyList
-import bookstore.playground.domain.InvalidEmailAddress
-import bookstore.playground.domain.InvalidMember
-import bookstore.playground.domain.InvalidName
-import bookstore.playground.domain.Member
-import bookstore.playground.domain.UnvalidatedEmailAddress
-import bookstore.playground.domain.UnvalidatedMember
-import bookstore.playground.domain.UnvalidatedName
+import bookstore.playground.domain.*
 import bookstore.playground.usecase.registerNewMemberUsecase
-import io.ktor.http.HttpStatusCode
-import io.ktor.server.request.receive
-import io.ktor.server.response.respond
-import io.ktor.server.routing.RoutingContext
+import io.ktor.http.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 import org.slf4j.LoggerFactory
 
@@ -36,15 +30,15 @@ suspend fun RoutingContext.registerNewMemberHandler() {
     logger.info("Received new member request: $newMemberRequest")
 
     val unvalidatedMember = newMemberRequest.toUnvalidatedMember()
-    val member = registerNewMemberUsecase(unvalidatedMember)
+    val validationResult = registerNewMemberUsecase(unvalidatedMember)
 
-    when (member) {
+    when (validationResult) {
         is Either.Right -> {
-            logger.info("Member created successfully: $member")
+            logger.info("Member created successfully: $validationResult")
             call.respond(HttpStatusCode.Companion.Created)
         }
         is Either.Left -> {
-            val messages = errorMessages(member, unvalidatedMember)
+            val messages = errorMessages(validationResult, unvalidatedMember)
             logger.warn("Member creation failed: $messages")
             call.respond(
                 HttpStatusCode.Companion.BadRequest,
