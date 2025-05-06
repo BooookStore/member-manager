@@ -37,9 +37,11 @@ suspend fun RoutingContext.registerNewMemberHandler() {
             call.respond(HttpStatusCode.Created)
         }
         is Either.Left -> {
+            val messages = errorMessages(member, unvalidatedMember)
+            logger.warn("Member creation failed: $messages")
             call.respond(
                 HttpStatusCode.BadRequest,
-                RegisterNewMemberBadRequestResponse(errorMessages(member, unvalidatedMember).toList())
+                RegisterNewMemberBadRequestResponse(messages.toList())
             )
         }
     }
