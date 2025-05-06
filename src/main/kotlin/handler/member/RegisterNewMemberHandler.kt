@@ -5,7 +5,6 @@ import bookstore.playground.domain.Member
 import bookstore.playground.domain.UnvalidatedEmailAddress
 import bookstore.playground.domain.UnvalidatedMember
 import bookstore.playground.domain.UnvalidatedName
-import bookstore.playground.domain.validator.*
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -27,9 +26,7 @@ fun RegisterNewMemberRequest.toUnvalidatedMember(): UnvalidatedMember =
         unvalidatedEmailAddress = UnvalidatedEmailAddress(emailAddress)
     )
 
-suspend fun RoutingContext.registerNewMemberHandler(
-    memberValidator: Validator<UnvalidatedMember>,
-) {
+suspend fun RoutingContext.registerNewMemberHandler() {
     val newMemberRequest = call.receive<RegisterNewMemberRequest>()
     logger.info("Received new member request: $newMemberRequest")
 
