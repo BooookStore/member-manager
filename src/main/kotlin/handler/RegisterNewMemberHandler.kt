@@ -9,6 +9,7 @@ import bookstore.playground.domain.Member
 import bookstore.playground.domain.UnvalidatedEmailAddress
 import bookstore.playground.domain.UnvalidatedMember
 import bookstore.playground.domain.UnvalidatedName
+import bookstore.playground.usecase.registerNewMemberUsecase
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
@@ -35,7 +36,7 @@ suspend fun RoutingContext.registerNewMemberHandler() {
     logger.info("Received new member request: $newMemberRequest")
 
     val unvalidatedMember = newMemberRequest.toUnvalidatedMember()
-    val member = Member.Companion.create(unvalidatedMember)
+    val member = registerNewMemberUsecase(unvalidatedMember)
 
     when (member) {
         is Either.Right -> {

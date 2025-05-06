@@ -30,7 +30,7 @@ fun testApplicationWithCommonSetup(block: suspend ApplicationTestBuilder.(client
 class RegisterNewMemberTest {
 
     @Test
-    fun testRoot() = testApplicationWithCommonSetup { client ->
+    fun validMemberReturnedCreated() = testApplicationWithCommonSetup { client ->
         client.post("/members") {
             contentType(ContentType.Application.Json)
             setBody("""
@@ -45,7 +45,7 @@ class RegisterNewMemberTest {
     }
 
     @Test
-    fun invalidEmailAddressReturnedBadRequest() = testApplicationWithCommonSetup { client ->
+    fun invalidMemberReturnedBadRequest() = testApplicationWithCommonSetup { client ->
         client.post("/members") {
             contentType(ContentType.Application.Json)
             setBody("""
