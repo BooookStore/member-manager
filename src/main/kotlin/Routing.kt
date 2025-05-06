@@ -1,6 +1,6 @@
 package bookstore.playground
 
-import bookstore.playground.handler.member.registerNewMemberHandler
+import bookstore.playground.handler.registerNewMemberHandler
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 
