@@ -1,11 +1,10 @@
 package bookstore.playground.domain
 
+import arrow.core.Either
 import arrow.core.EitherNel
 import arrow.core.raise.either
 import arrow.core.raise.ensure
 import arrow.core.raise.zipOrAccumulate
-import bookstore.playground.domain.InvalidEmailAddress.Blank
-import bookstore.playground.domain.InvalidEmailAddress.InvalidDomain
 
 data class Member(val name: Name, val emailAddress: EmailAddress)
 
@@ -22,12 +21,26 @@ data class EmailAddress private constructor(val rawEmailAddress: String) {
             val rawEmailAddress = unvalidatedEmailAddress.rawEmailAddress
 
             zipOrAccumulate(
-                { ensure(rawEmailAddress.isNotBlank()) { Blank } },
-                { ensure(rawEmailAddress.substringAfter("@") == "example.com") { InvalidDomain } }
+                { ensure(rawEmailAddress.isNotBlank()) { InvalidEmailAddress.Blank } },
+                { ensure(rawEmailAddress.substringAfter("@") == "example.com") { InvalidEmailAddress.InvalidDomain } }
             ) { _, _ -> EmailAddress(rawEmailAddress) }
         }
     }
 
 }
 
-data class Name(val rawName: String)
+sealed interface InvalidName {
+    object Blank : InvalidName
+}
+
+@ConsistentCopyVisibility
+data class Name private constructor(val rawName: String) {
+
+    companion object {
+        fun create(unvalidatedName: UnvalidatedName): Either<InvalidName, Name> = either {
+            ensure(unvalidatedName.rawName.isNotBlank()) { InvalidName.Blank }
+            Name(unvalidatedName.rawName)
+        }
+    }
+
+}

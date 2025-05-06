@@ -3,10 +3,7 @@ package bookstore.playground.domain.validator
 import arrow.core.Either.Left
 import arrow.core.Either.Right
 import arrow.core.nonEmptyListOf
-import bookstore.playground.domain.EmailAddress
-import bookstore.playground.domain.InvalidEmailAddress.Blank
-import bookstore.playground.domain.InvalidEmailAddress.InvalidDomain
-import bookstore.playground.domain.UnvalidatedEmailAddress
+import bookstore.playground.domain.*
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Nested
 import kotlin.test.Test
@@ -32,7 +29,8 @@ class MemberTest {
             val emailAddress = EmailAddress.create(UnvalidatedEmailAddress(""))
 
             when (emailAddress) {
-                is Left -> emailAddress.value shouldBe nonEmptyListOf(Blank, InvalidDomain)
+                is Left -> emailAddress.value shouldBe nonEmptyListOf(InvalidEmailAddress.Blank, InvalidEmailAddress.InvalidDomain
+                )
                 is Right -> fail("Expected a Either.Left, but got Either.Right")
             }
         }
@@ -42,7 +40,7 @@ class MemberTest {
             val emailAddress = EmailAddress.create(UnvalidatedEmailAddress("john.done@xample.com"))
 
             when (emailAddress) {
-                is Left -> emailAddress.value shouldBe nonEmptyListOf(InvalidDomain)
+                is Left -> emailAddress.value shouldBe nonEmptyListOf(InvalidEmailAddress.InvalidDomain)
                 is Right -> fail("Expected a Either.Left, but got Either.Right")
             }
         }
@@ -52,11 +50,35 @@ class MemberTest {
             val emailAddress = EmailAddress.create(UnvalidatedEmailAddress("john.done"))
 
             when (emailAddress) {
-                is Left -> emailAddress.value shouldBe nonEmptyListOf(InvalidDomain)
+                is Left -> emailAddress.value shouldBe nonEmptyListOf(InvalidEmailAddress.InvalidDomain)
                 is Right -> fail("Expected a Either.Left, but got Either.Right")
             }
         }
 
+    }
+
+    @Nested
+    inner class NameTest {
+
+        @Test
+        fun nameFromUnvalidatedName() {
+            val name = Name.create(UnvalidatedName("John Doe"))
+
+            when (name) {
+                is Left -> fail("Expected a Either.Right, but got Either.Left")
+                is Right -> name.value.rawName shouldBe "John Doe"
+            }
+        }
+
+        @Test
+        fun invalidNameFromBlank() {
+            val name = Name.create(UnvalidatedName(" "))
+
+            when (name) {
+                is Left -> name.value shouldBe InvalidName.Blank
+                is Right -> fail("Expected a Either.Left, but got Either.Right")
+            }
+        }
     }
 
 }
