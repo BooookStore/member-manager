@@ -1,10 +1,7 @@
 package bookstore.playground.handler.member
 
 import arrow.core.Either
-import bookstore.playground.domain.Member
-import bookstore.playground.domain.UnvalidatedEmailAddress
-import bookstore.playground.domain.UnvalidatedMember
-import bookstore.playground.domain.UnvalidatedName
+import bookstore.playground.domain.*
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -39,7 +36,27 @@ suspend fun RoutingContext.registerNewMemberHandler() {
             call.respond(HttpStatusCode.Created)
         }
         is Either.Left -> {
-            TODO()
+            val validationErrors = member.value
+            val messages = validationErrors.map {
+                when (it) {
+                    is InvalidMember.InvalidMemberName -> {
+                        when (it.invalidName) {
+                            InvalidName.Blank -> "invalid name '${unvalidatedMember.unvalidatedName.rawName}' is blank"
+                        }
+                    }
+                    is InvalidMember.InvalidMemberEmailAddress -> {
+                        when (it.invalidEmailAddress) {
+                            InvalidEmailAddress.Blank -> "invalid email address '${unvalidatedMember.unvalidatedEmailAddress.rawEmailAddress}' is blank"
+                            InvalidEmailAddress.UnexpectedDomain -> "invalid email address '${unvalidatedMember.unvalidatedEmailAddress.rawEmailAddress}' not match domain 'example.com'"
+                        }
+                    }
+                }
+            }
+            logger.warn("Member creation failed: $messages")
+            call.respond(
+                HttpStatusCode.BadRequest,
+                RegisterNewMemberBadRequestResponse(messages.toList())
+            )
         }
     }
 }

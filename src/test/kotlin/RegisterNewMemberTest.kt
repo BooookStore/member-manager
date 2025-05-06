@@ -9,7 +9,6 @@ import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.testing.*
 import net.javacrumbs.jsonunit.kotest.equalJson
-import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -46,14 +45,13 @@ class RegisterNewMemberTest {
     }
 
     @Test
-    @Ignore
     fun invalidEmailAddressReturnedBadRequest() = testApplicationWithCommonSetup { client ->
         client.post("/members") {
             contentType(ContentType.Application.Json)
             setBody("""
                 {
-                    "name": "John Doe",
-                    "emailAddress": "invalid-email"
+                    "name": "",
+                    "emailAddress": ""
                 }
             """.trimIndent())
         }.apply {
@@ -61,8 +59,9 @@ class RegisterNewMemberTest {
             """
                 {
                     "messages": [
-                        "invalid email address 'invalid-email' not contain '@' symbol",
-                        "invalid email address 'invalid-email' not match domain 'example.com'"
+                        "invalid name '' is blank",
+                        "invalid email address '' is blank",
+                        "invalid email address '' not match domain 'example.com'"
                     ]
                 }
             """ should equalJson(bodyAsText())
