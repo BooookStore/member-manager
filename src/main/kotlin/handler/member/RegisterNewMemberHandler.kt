@@ -1,6 +1,7 @@
 package bookstore.playground.handler.member
 
 import arrow.core.Either
+import arrow.core.NonEmptyList
 import bookstore.playground.domain.*
 import io.ktor.http.*
 import io.ktor.server.request.*
@@ -36,27 +37,28 @@ suspend fun RoutingContext.registerNewMemberHandler() {
             call.respond(HttpStatusCode.Created)
         }
         is Either.Left -> {
-            val validationErrors = member.value
-            val messages = validationErrors.map {
-                when (it) {
-                    is InvalidMember.InvalidMemberName -> {
-                        when (it.invalidName) {
-                            InvalidName.Blank -> "invalid name '${unvalidatedMember.unvalidatedName.rawName}' is blank"
-                        }
-                    }
-                    is InvalidMember.InvalidMemberEmailAddress -> {
-                        when (it.invalidEmailAddress) {
-                            InvalidEmailAddress.Blank -> "invalid email address '${unvalidatedMember.unvalidatedEmailAddress.rawEmailAddress}' is blank"
-                            InvalidEmailAddress.UnexpectedDomain -> "invalid email address '${unvalidatedMember.unvalidatedEmailAddress.rawEmailAddress}' not match domain 'example.com'"
-                        }
-                    }
-                }
-            }
-            logger.warn("Member creation failed: $messages")
             call.respond(
                 HttpStatusCode.BadRequest,
-                RegisterNewMemberBadRequestResponse(messages.toList())
+                RegisterNewMemberBadRequestResponse(errorMessages(member, unvalidatedMember).toList())
             )
+        }
+    }
+}
+
+private fun errorMessages(member: Either.Left<NonEmptyList<InvalidMember>>, unvalidatedMember: UnvalidatedMember): NonEmptyList<String> {
+    fun messageByInvalidMemberName(name: InvalidMember.InvalidMemberName): String = when (name.invalidName) {
+        InvalidName.Blank -> "invalid name '${unvalidatedMember.unvalidatedName.rawName}' is blank"
+    }
+
+    fun messageByInvalidMemberEmailAddress(address: InvalidMember.InvalidMemberEmailAddress): String = when (address.invalidEmailAddress) {
+        InvalidEmailAddress.Blank -> "invalid email address '${unvalidatedMember.unvalidatedEmailAddress.rawEmailAddress}' is blank"
+        InvalidEmailAddress.UnexpectedDomain -> "invalid email address '${unvalidatedMember.unvalidatedEmailAddress.rawEmailAddress}' not match domain 'example.com'"
+    }
+
+    return member.value.map {
+        when (it) {
+            is InvalidMember.InvalidMemberName -> messageByInvalidMemberName(it)
+            is InvalidMember.InvalidMemberEmailAddress -> messageByInvalidMemberEmailAddress(it)
         }
     }
 }
