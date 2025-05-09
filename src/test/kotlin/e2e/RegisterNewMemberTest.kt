@@ -1,6 +1,7 @@
 package e2e
 
 import io.kotest.matchers.should
+import io.kotest.matchers.shouldBe
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -41,6 +42,13 @@ class RegisterNewMemberTest : E2ETestBase() {
         }.apply {
             assertEquals(HttpStatusCode.Created, status)
         }
+
+        transaction {
+            exec("SELECT COUNT(*) FROM member") { result ->
+                result.next()
+                assertEquals(1, result.getInt(1), "Expected 1 member to be inserted")
+            }
+        }
     }
 
     @Test
@@ -66,5 +74,7 @@ class RegisterNewMemberTest : E2ETestBase() {
             """ should equalJson(bodyAsText())
         }
     }
+
+    // todo: already existing member testcase
 
 }
