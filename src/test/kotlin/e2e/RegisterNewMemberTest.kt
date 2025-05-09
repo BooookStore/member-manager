@@ -48,6 +48,11 @@ class RegisterNewMemberTest : E2ETestBase() {
                 result.next()
                 assertEquals(1, result.getInt(1), "Expected 1 member to be inserted")
             }
+            exec("SELECT * FROM member") { result ->
+                result.next()
+                assertEquals("John Doe", result.getString("name"))
+                assertEquals("john.done@example.com", result.getString("email_address"))
+            }
         }
     }
 
