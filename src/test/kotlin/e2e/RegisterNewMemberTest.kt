@@ -60,8 +60,12 @@ class RegisterNewMemberTest {
     fun setUp(testInfo: TestInfo) {
         connectToDatabase()
         truncateDatabase()
+        loadDataToDatabase(testInfo)
+    }
 
-        val testClassResourceDir = testInfo.testClass.map { it.name }.map { it.replace("bookstore.playground", "").replace(".", "/").substring(1) }
+    private fun loadDataToDatabase(testInfo: TestInfo) {
+        val testClassResourceDir = testInfo.testClass.map { it.name }
+            .map { it.replace("bookstore.playground", "").replace(".", "/").substring(1) }
             .orElseThrow { IllegalArgumentException("Test class not found") }
 
         val testMethodResourceDir = testInfo.testMethod.map { it.name }
