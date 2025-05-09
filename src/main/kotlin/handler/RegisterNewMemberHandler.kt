@@ -3,6 +3,7 @@ package bookstore.playground.handler
 import arrow.core.Either
 import arrow.core.NonEmptyList
 import bookstore.playground.domain.*
+import bookstore.playground.driver.PostgresMemberDriver
 import bookstore.playground.usecase.RegisterNewMemberError
 import bookstore.playground.usecase.registerNewMemberUsecase
 import io.ktor.http.*
@@ -31,7 +32,7 @@ suspend fun RoutingContext.registerNewMemberHandler() {
     logger.info("Received new member request: $newMemberRequest")
 
     val unvalidatedMember = newMemberRequest.toUnvalidatedMember()
-    val result = registerNewMemberUsecase(unvalidatedMember)
+    val result = registerNewMemberUsecase(PostgresMemberDriver, unvalidatedMember)
 
     when (result) {
         is Either.Right -> {

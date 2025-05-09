@@ -12,7 +12,7 @@ object MemberTable : Table("member") {
     override val primaryKey = PrimaryKey(emailAddress)
 }
 
-class PostgresMemberDriver : MemberGateway {
+object PostgresMemberDriver : MemberGateway {
 
     override fun registerNewMember(member: Member) {
         transaction {
