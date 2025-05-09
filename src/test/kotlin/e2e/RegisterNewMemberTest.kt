@@ -78,6 +78,13 @@ class RegisterNewMemberTest : E2ETestBase() {
                 }
             """ should equalJson(bodyAsText())
         }
+
+        transaction {
+            exec("SELECT COUNT(*) FROM member") { result ->
+                result.next()
+                assertEquals(0, result.getInt(1), "Expected 0 members to be inserted")
+            }
+        }
     }
 
     // todo: already existing member testcase
