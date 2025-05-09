@@ -76,10 +76,13 @@ class RegisterNewMemberTest {
 
         File("src/test/resources/$testResourceDir").listFiles()?.forEach { file ->
             println("test resource file: ${file.name}")
-            transaction {
-                exec(file.readText())
-            }
+            loadFileToDatabase(file)
         }
+    }
+
+    private fun loadFileToDatabase(file: File) = file.bufferedReader().use { reader ->
+        println("test resource content: ${reader.readText()}")
+        transaction { exec(reader.readText()) }
     }
 
     private fun truncateDatabase() = transaction {
