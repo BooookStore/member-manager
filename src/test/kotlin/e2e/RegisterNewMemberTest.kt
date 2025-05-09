@@ -58,16 +58,8 @@ class RegisterNewMemberTest {
 
     @BeforeTest
     fun setUp(testInfo: TestInfo) {
-        Database.connect(
-            url = "jdbc:postgresql://${postgres.host}:${postgres.firstMappedPort}/member-manager",
-            user = postgresUser,
-            password = postgresPassword,
-            driver = "org.postgresql.Driver",
-        )
-
-        transaction {
-            exec("TRUNCATE TABLE member")
-        }
+        connectToDatabase()
+        truncateDatabase()
 
         val testClassResourceDir = testInfo.testClass.map { it.name }.map { it.replace("bookstore.playground", "").replace(".", "/").substring(1) }
             .orElseThrow { IllegalArgumentException("Test class not found") }
@@ -84,6 +76,19 @@ class RegisterNewMemberTest {
                 exec(file.readText())
             }
         }
+    }
+
+    private fun truncateDatabase() = transaction {
+        exec("TRUNCATE TABLE member")
+    }
+
+    private fun connectToDatabase() {
+        Database.connect(
+            url = "jdbc:postgresql://${postgres.host}:${postgres.firstMappedPort}/member-manager",
+            user = postgresUser,
+            password = postgresPassword,
+            driver = "org.postgresql.Driver",
+        )
     }
 
     @Test
