@@ -16,6 +16,5 @@ fun registerNewMemberUsecase(memberGateway: MemberGateway, unvalidatedMember: Un
     val member = Member.create(unvalidatedMember)
         .mapLeft { RegisterNewMemberError.InvalidMemberError(it) }
         .bind()
-
-    memberGateway.registerNewMember(member)
+    Member.registerAsNewMember(memberGateway, member)
 }
