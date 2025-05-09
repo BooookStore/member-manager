@@ -65,6 +65,10 @@ class RegisterNewMemberTest {
             driver = "org.postgresql.Driver",
         )
 
+        transaction {
+            exec("TRUNCATE TABLE member")
+        }
+
         val testClassResourceDir = testInfo.testClass.map { it.name }.map { it.replace("bookstore.playground", "").replace(".", "/").substring(1) }
             .orElseThrow { IllegalArgumentException("Test class not found") }
 
