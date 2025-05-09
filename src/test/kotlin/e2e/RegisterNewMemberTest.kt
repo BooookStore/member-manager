@@ -1,35 +1,15 @@
 package e2e
 
-import bookstore.playground.module
 import io.kotest.matchers.should
-import io.ktor.client.*
-import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.serialization.jackson.*
-import io.ktor.server.testing.*
 import kotlinx.coroutines.test.runTest
 import net.javacrumbs.jsonunit.kotest.equalJson
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.testcontainers.junit.jupiter.Testcontainers
 import kotlin.test.Test
 import kotlin.test.assertEquals
-
-fun testApplicationWithCommonSetup(block: suspend ApplicationTestBuilder.(client: HttpClient) -> Unit) =
-    testApplication {
-        application {
-            module()
-        }
-
-        val client = createClient {
-            install(ContentNegotiation) {
-                jackson()
-            }
-        }
-
-        block(client)
-    }
 
 @Testcontainers
 class RegisterNewMemberTest : E2ETestBase() {

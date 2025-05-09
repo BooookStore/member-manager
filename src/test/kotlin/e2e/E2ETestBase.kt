@@ -1,5 +1,11 @@
 package e2e
 
+import bookstore.playground.module
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.jackson.jackson
+import io.ktor.server.testing.ApplicationTestBuilder
+import io.ktor.server.testing.testApplication
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.jupiter.api.TestInfo
@@ -67,5 +73,21 @@ open class E2ETestBase {
             driver = "org.postgresql.Driver",
         )
     }
+
+    fun testApplicationWithCommonSetup(block: suspend ApplicationTestBuilder.(client: HttpClient) -> Unit) =
+        testApplication {
+            application {
+                module()
+            }
+
+            val client = createClient {
+                install(ContentNegotiation) {
+                    jackson()
+                }
+            }
+
+            block(client)
+        }
+
 
 }
