@@ -2,6 +2,7 @@ package bookstore.playground.handler
 
 import arrow.core.Either
 import arrow.core.NonEmptyList
+import arrow.core.nonEmptyListOf
 import bookstore.playground.domain.*
 import bookstore.playground.gateway.MemberGateway
 import bookstore.playground.usecase.RegisterNewMemberError
@@ -71,5 +72,6 @@ private fun errorMessages(error: RegisterNewMemberError, unvalidatedMember: Unva
 
     return when (error) {
         is RegisterNewMemberError.InvalidMemberError -> messageByInvalidMemberError(error)
+        is RegisterNewMemberError.MemberAlreadyExistsError -> nonEmptyListOf("already existing member with email address '${unvalidatedMember.unvalidatedEmailAddress.rawEmailAddress}'")
     }
 }
