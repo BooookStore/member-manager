@@ -29,13 +29,11 @@ open class E2ETestBase {
         .withEnv("POSTGRES_USER", postgresUser)
         .withEnv("POSTGRES_PASSWORD", postgresPassword)
         .withEnv("POSTGRES_DB", "member-manager")
-        .withReuse(true)
         .withCopyFileToContainer(MountableFile.forClasspathResource("database/01-schema.sql"), "/docker-entrypoint-initdb.d/01-schema.sql")
         .waitingFor(Wait.forLogMessage(".*database system is ready to accept connections.*\\s", 2))!!
 
     @BeforeTest
     fun setUp(testInfo: TestInfo) {
-        postgres.start()
         connectToDatabase()
         truncateDatabase()
         loadDataToDatabase(testInfo)
