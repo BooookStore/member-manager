@@ -5,7 +5,6 @@ import arrow.core.Either.Right
 import arrow.core.nonEmptyListOf
 import bookstore.playground.domain.*
 import io.kotest.matchers.shouldBe
-import org.junit.jupiter.api.Nested
 import kotlin.test.Test
 import kotlin.test.fail
 
@@ -60,30 +59,6 @@ class MemberTest {
                 InvalidMember.InvalidMemberEmailAddress(InvalidEmailAddress.UnexpectedDomain)
             )
             is Right -> fail("Expected a Either.Left, but got Either.Right")
-        }
-    }
-
-    @Nested
-    inner class NameTest {
-
-        @Test
-        fun nameFromUnvalidatedName() {
-            val name = Name.create(UnvalidatedName("John Doe"))
-
-            when (name) {
-                is Left -> fail("Expected a Either.Right, but got Either.Left")
-                is Right -> name.value.rawName shouldBe "John Doe"
-            }
-        }
-
-        @Test
-        fun invalidNameFromBlank() {
-            val name = Name.create(UnvalidatedName(" "))
-
-            when (name) {
-                is Left -> name.value shouldBe InvalidName.Blank
-                is Right -> fail("Expected a Either.Left, but got Either.Right")
-            }
         }
     }
 

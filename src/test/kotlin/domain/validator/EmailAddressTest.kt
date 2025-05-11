@@ -1,6 +1,5 @@
 package domain.validator
 
-import arrow.core.Either
 import arrow.core.Either.Left
 import arrow.core.Either.Right
 import arrow.core.nonEmptyListOf
