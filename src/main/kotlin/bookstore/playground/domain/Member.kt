@@ -2,6 +2,7 @@ package bookstore.playground.domain
 
 import arrow.core.Either
 import arrow.core.EitherNel
+import arrow.core.left
 import arrow.core.raise.either
 import arrow.core.raise.ensure
 import arrow.core.raise.zipOrAccumulate
@@ -11,6 +12,8 @@ sealed interface InvalidMember {
     data class InvalidMemberName(val invalidName: InvalidName) : InvalidMember
     data class InvalidMemberEmailAddress(val invalidEmailAddress: InvalidEmailAddress) : InvalidMember
 }
+
+object MemberNotFound
 
 @ConsistentCopyVisibility
 data class Member private constructor(val name: Name, val emailAddress: EmailAddress) {
@@ -34,6 +37,10 @@ data class Member private constructor(val name: Name, val emailAddress: EmailAdd
 
         fun registerAsNewMember(memberPort: MemberPort, member: Member) {
             memberPort.registerNewMember(member)
+        }
+
+        fun exist(memberPort: MemberPort, member: Member): Either<MemberNotFound, Member> {
+            return MemberNotFound.left()
         }
     }
 

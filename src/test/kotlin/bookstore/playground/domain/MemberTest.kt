@@ -2,8 +2,14 @@ package bookstore.playground.domain
 
 import arrow.core.Either.Left
 import arrow.core.Either.Right
+import arrow.core.getOrElse
 import arrow.core.nonEmptyListOf
+import arrow.core.right
+import bookstore.playground.port.MemberPort
 import io.kotest.matchers.shouldBe
+import io.mockk.every
+import io.mockk.mockk
+import org.junit.jupiter.api.Nested
 import kotlin.test.Test
 import kotlin.test.fail
 
@@ -59,6 +65,28 @@ class MemberTest {
             )
             is Right -> fail("Expected a Either.Left, but got Either.Right")
         }
+    }
+
+    @Nested
+    inner class Exist {
+
+        @Test
+        fun whenExistReturnTrue() {
+            val existingMember = Member.create(
+                UnvalidatedMember(
+                    UnvalidatedName("John Done"),
+                    UnvalidatedEmailAddress("john.done@example.com")
+                )
+            ).getOrElse { fail("Expected a Either.Right, but got Either.Left") }
+
+            val memberPort = mockk<MemberPort>()
+            every { memberPort.getMemberByEmailAddress(existingMember.emailAddress) } returns existingMember.right()
+
+            val result = Member.exist(memberPort, existingMember)
+
+            result.isLeft() shouldBe true
+        }
+
     }
 
 }

@@ -18,6 +18,7 @@
         <slf4j_version>2.0.9</slf4j_version>
         <arrow_version>2.1.1</arrow_version>
         <testcontainers_version>1.21.0</testcontainers_version>
+        <mockk_version>1.14.2</mockk_version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <main.class>io.ktor.server.netty.EngineMain</main.class>
@@ -125,6 +126,12 @@
             <groupId>org.testcontainers</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>${testcontainers_version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.mockk</groupId>
+            <artifactId>mockk-jvm</artifactId>
+            <version>${mockk_version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
