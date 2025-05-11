@@ -1,1 +1,0 @@
-INSERT INTO member (email_address, name) VALUES ('john.doe@example.com', 'John Doe');

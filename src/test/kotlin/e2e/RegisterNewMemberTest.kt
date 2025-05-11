@@ -71,6 +71,26 @@ class RegisterNewMemberTest : E2ETestBase() {
         }
     }
 
-    // todo: already existing member testcase
+    @Test
+    fun alreadyExistingMemberReturnedBadRequest() = testApplicationWithCommonSetup { client ->
+        client.post("/members") {
+            contentType(ContentType.Application.Json)
+            setBody("""
+                {
+                    "name": "John Doe",
+                    "emailAddress": "john.done@example.com"
+                }
+            """.trimIndent())
+        }.apply {
+            assertEquals(HttpStatusCode.BadRequest, status)
+            """
+                {
+                    "messages": [
+                        "already existing member with email address 'john.done@example.com'"
+                    ]
+                }
+            """ should equalJson(bodyAsText())
+        }
+    }
 
 }

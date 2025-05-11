@@ -29,11 +29,13 @@ open class E2ETestBase {
         .withEnv("POSTGRES_USER", postgresUser)
         .withEnv("POSTGRES_PASSWORD", postgresPassword)
         .withEnv("POSTGRES_DB", "member-manager")
+        .withReuse(true)
         .withCopyFileToContainer(MountableFile.forClasspathResource("database/01-schema.sql"), "/docker-entrypoint-initdb.d/01-schema.sql")
         .waitingFor(Wait.forLogMessage(".*database system is ready to accept connections.*\\s", 2))!!
 
     @BeforeTest
     fun setUp(testInfo: TestInfo) {
+        postgres.start()
         connectToDatabase()
         truncateDatabase()
         loadDataToDatabase(testInfo)
@@ -41,7 +43,7 @@ open class E2ETestBase {
 
     private fun loadDataToDatabase(testInfo: TestInfo) {
         val testClassResourceDir = testInfo.testClass.map { it.name }
-            .map { it.replace("bookstore.playground", "").replace(".", "/").substring(1) }
+            .map { it.replace(".", "/") }
             .orElseThrow { IllegalArgumentException("Test class not found") }
 
         val testMethodResourceDir = testInfo.testMethod.map { it.name }
@@ -57,8 +59,11 @@ open class E2ETestBase {
     }
 
     private fun loadFileToDatabase(file: File) = file.bufferedReader().use { reader ->
-        println("test resource content: ${reader.readText()}")
-        transaction { exec(reader.readText()) }
+        val sql = reader.readText()
+        println("===load to database===")
+        println(sql)
+        println("======================")
+        transaction { exec(sql) }
     }
 
     private fun truncateDatabase() = transaction {
