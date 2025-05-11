@@ -3,6 +3,7 @@ package bookstore.playground.domain
 import arrow.core.Either.Left
 import arrow.core.Either.Right
 import arrow.core.getOrElse
+import arrow.core.left
 import arrow.core.nonEmptyListOf
 import arrow.core.right
 import bookstore.playground.port.MemberPort
@@ -82,9 +83,22 @@ class MemberTest {
             val memberPort = mockk<MemberPort>()
             every { memberPort.getMemberByEmailAddress(existingMember.emailAddress) } returns existingMember.right()
 
-            val result = Member.exist(memberPort, existingMember)
+            Member.exist(memberPort, existingMember) shouldBe true
+        }
 
-            result.isLeft() shouldBe true
+        @Test
+        fun whenNotExistReturnFalse() {
+            val nonExistingMember = Member.create(
+                UnvalidatedMember(
+                    UnvalidatedName("John Done"),
+                    UnvalidatedEmailAddress("john.done@example.com")
+                )
+            ).getOrElse { fail("Expected a Either.Right, but got Either.Left") }
+
+            val memberPort = mockk<MemberPort>()
+            every { memberPort.getMemberByEmailAddress(any()) } returns MemberNotFound.left()
+
+            Member.exist(memberPort, nonExistingMember) shouldBe false
         }
 
     }

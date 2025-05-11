@@ -87,6 +87,12 @@
             <version>${arrow_version}</version>
         </dependency>
         <dependency>
+            <groupId>io.mockk</groupId>
+            <artifactId>mockk-jvm</artifactId>
+            <version>${mockk_version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>io.ktor</groupId>
             <artifactId>ktor-server-test-host-jvm</artifactId>
             <version>${ktor_version}</version>
@@ -96,12 +102,6 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-test-junit5</artifactId>
             <version>${kotlin_version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlinx</groupId>
-            <artifactId>kotlinx-coroutines-debug</artifactId>
-            <version>1.6.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -126,12 +126,6 @@
             <groupId>org.testcontainers</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>${testcontainers_version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.mockk</groupId>
-            <artifactId>mockk-jvm</artifactId>
-            <version>${mockk_version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

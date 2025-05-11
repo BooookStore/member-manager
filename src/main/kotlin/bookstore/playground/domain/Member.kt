@@ -39,8 +39,8 @@ data class Member private constructor(val name: Name, val emailAddress: EmailAdd
             memberPort.registerNewMember(member)
         }
 
-        fun exist(memberPort: MemberPort, member: Member): Either<MemberNotFound, Member> {
-            return MemberNotFound.left()
+        fun exist(memberPort: MemberPort, member: Member): Boolean {
+            return memberPort.getMemberByEmailAddress(member.emailAddress).isRight()
         }
     }
 
