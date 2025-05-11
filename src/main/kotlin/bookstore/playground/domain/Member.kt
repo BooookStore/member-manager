@@ -2,7 +2,6 @@ package bookstore.playground.domain
 
 import arrow.core.Either
 import arrow.core.EitherNel
-import arrow.core.left
 import arrow.core.raise.either
 import arrow.core.raise.ensure
 import arrow.core.raise.zipOrAccumulate
