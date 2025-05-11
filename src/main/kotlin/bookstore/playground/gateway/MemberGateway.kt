@@ -1,6 +1,6 @@
-package bookstore.playground.bookstore.playground.gateway
+package bookstore.playground.gateway
 
-import bookstore.playground.bookstore.playground.domain.Member
+import bookstore.playground.domain.Member
 
 interface MemberGateway {
 

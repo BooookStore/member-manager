@@ -1,11 +1,11 @@
-package bookstore.playground.bookstore.playground.domain
+package bookstore.playground.domain
 
 import arrow.core.Either
 import arrow.core.EitherNel
 import arrow.core.raise.either
 import arrow.core.raise.ensure
 import arrow.core.raise.zipOrAccumulate
-import bookstore.playground.bookstore.playground.gateway.MemberGateway
+import bookstore.playground.gateway.MemberGateway
 
 sealed interface InvalidMember {
     data class InvalidMemberName(val invalidName: InvalidName) : InvalidMember

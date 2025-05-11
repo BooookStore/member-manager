@@ -1,7 +1,7 @@
-package bookstore.playground.bookstore.playground.driver
+package bookstore.playground.driver
 
-import bookstore.playground.bookstore.playground.domain.Member
-import bookstore.playground.bookstore.playground.gateway.MemberGateway
+import bookstore.playground.domain.Member
+import bookstore.playground.gateway.MemberGateway
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction

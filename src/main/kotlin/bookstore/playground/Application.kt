@@ -1,4 +1,4 @@
-package bookstore.playground.bookstore.playground
+package bookstore.playground
 
 import io.ktor.server.application.*
 import io.ktor.server.netty.EngineMain
