@@ -12,8 +12,6 @@ sealed interface InvalidMember {
     data class InvalidMemberEmailAddress(val invalidEmailAddress: InvalidEmailAddress) : InvalidMember
 }
 
-object MemberNotFound
-
 @ConsistentCopyVisibility
 data class Member private constructor(val name: Name, val emailAddress: EmailAddress) {
 
@@ -39,7 +37,7 @@ data class Member private constructor(val name: Name, val emailAddress: EmailAdd
         }
 
         fun exist(memberPort: MemberPort, member: Member): Boolean {
-            return memberPort.getMemberByEmailAddress(member.emailAddress).isRight()
+            return memberPort.getMemberByEmailAddress(member.emailAddress).isSome()
         }
     }
 

@@ -3,9 +3,9 @@ package bookstore.playground.domain
 import arrow.core.Either.Left
 import arrow.core.Either.Right
 import arrow.core.getOrElse
-import arrow.core.left
 import arrow.core.nonEmptyListOf
-import arrow.core.right
+import arrow.core.none
+import arrow.core.some
 import bookstore.playground.port.MemberPort
 import io.kotest.matchers.shouldBe
 import io.mockk.every
@@ -81,7 +81,7 @@ class MemberTest {
             ).getOrElse { fail("Expected a Either.Right, but got Either.Left") }
 
             val memberPort = mockk<MemberPort>()
-            every { memberPort.getMemberByEmailAddress(existingMember.emailAddress) } returns existingMember.right()
+            every { memberPort.getMemberByEmailAddress(existingMember.emailAddress) } returns existingMember.some()
 
             Member.exist(memberPort, existingMember) shouldBe true
         }
@@ -96,7 +96,7 @@ class MemberTest {
             ).getOrElse { fail("Expected a Either.Right, but got Either.Left") }
 
             val memberPort = mockk<MemberPort>()
-            every { memberPort.getMemberByEmailAddress(any()) } returns MemberNotFound.left()
+            every { memberPort.getMemberByEmailAddress(any()) } returns none()
 
             Member.exist(memberPort, nonExistingMember) shouldBe false
         }
