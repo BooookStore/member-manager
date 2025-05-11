@@ -1,4 +1,4 @@
-package e2e
+package bookstore.playground.e2e
 
 import io.kotest.matchers.should
 import io.ktor.client.request.*

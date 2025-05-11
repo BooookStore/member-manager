@@ -1,9 +1,9 @@
-package domain.validator
+package bookstore.playground.domain
 
 import arrow.core.Either
-import bookstore.playground.domain.InvalidName
-import bookstore.playground.domain.Name
-import bookstore.playground.domain.UnvalidatedName
+import bookstore.playground.bookstore.playground.domain.InvalidName
+import bookstore.playground.bookstore.playground.domain.Name
+import bookstore.playground.bookstore.playground.domain.UnvalidatedName
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 import kotlin.test.fail

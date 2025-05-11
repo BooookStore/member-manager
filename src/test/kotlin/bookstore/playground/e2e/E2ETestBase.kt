@@ -1,6 +1,6 @@
-package e2e
+package bookstore.playground.e2e
 
-import bookstore.playground.module
+import bookstore.playground.bookstore.playground.module
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.jackson.jackson
@@ -43,7 +43,7 @@ open class E2ETestBase {
 
     private fun loadDataToDatabase(testInfo: TestInfo) {
         val testClassResourceDir = testInfo.testClass.map { it.name }
-            .map { it.replace(".", "/") }
+            .map { it.replace("bookstore.playground", "").replace(".", "/").substring(1) }
             .orElseThrow { IllegalArgumentException("Test class not found") }
 
         val testMethodResourceDir = testInfo.testMethod.map { it.name }

@@ -1,11 +1,16 @@
-package bookstore.playground.handler
+package bookstore.playground.bookstore.playground.handler
 
 import arrow.core.Either
 import arrow.core.NonEmptyList
-import bookstore.playground.domain.*
-import bookstore.playground.driver.PostgresMemberDriver
-import bookstore.playground.usecase.RegisterNewMemberError
-import bookstore.playground.usecase.registerNewMemberUsecase
+import bookstore.playground.bookstore.playground.domain.InvalidEmailAddress
+import bookstore.playground.bookstore.playground.domain.InvalidMember
+import bookstore.playground.bookstore.playground.domain.InvalidName
+import bookstore.playground.bookstore.playground.domain.UnvalidatedEmailAddress
+import bookstore.playground.bookstore.playground.domain.UnvalidatedMember
+import bookstore.playground.bookstore.playground.domain.UnvalidatedName
+import bookstore.playground.bookstore.playground.driver.PostgresMemberDriver
+import bookstore.playground.bookstore.playground.usecase.RegisterNewMemberError
+import bookstore.playground.bookstore.playground.usecase.registerNewMemberUsecase
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*

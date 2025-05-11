@@ -1,11 +1,11 @@
-package domain.validator
+package bookstore.playground.domain
 
 import arrow.core.Either.Left
 import arrow.core.Either.Right
 import arrow.core.nonEmptyListOf
-import bookstore.playground.domain.EmailAddress
-import bookstore.playground.domain.InvalidEmailAddress
-import bookstore.playground.domain.UnvalidatedEmailAddress
+import bookstore.playground.bookstore.playground.domain.EmailAddress
+import bookstore.playground.bookstore.playground.domain.InvalidEmailAddress
+import bookstore.playground.bookstore.playground.domain.UnvalidatedEmailAddress
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 import kotlin.test.fail

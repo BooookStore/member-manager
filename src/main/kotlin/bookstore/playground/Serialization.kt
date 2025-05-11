@@ -1,4 +1,4 @@
-package bookstore.playground
+package bookstore.playground.bookstore.playground
 
 import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.serialization.jackson.*
