@@ -1,6 +1,5 @@
 package bookstore.playground.driver
 
-import bookstore.playground.domain.Member
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -11,13 +10,15 @@ object MemberTable : Table("member") {
     override val primaryKey = PrimaryKey(emailAddress)
 }
 
+data class InsertMemberRow(val emailAddress: String, val name: String)
+
 object PostgresMemberDriver {
 
-    fun insertMember(member: Member) {
+    fun insertMember(row: InsertMemberRow) {
         transaction {
             MemberTable.insert {
-                it[emailAddress] = member.emailAddress.rawEmailAddress
-                it[name] = member.name.rawName
+                it[emailAddress] = row.emailAddress
+                it[name] = row.name
             }
         }
     }
