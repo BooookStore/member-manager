@@ -2,13 +2,8 @@ package bookstore.playground.handler
 
 import arrow.core.Either
 import arrow.core.NonEmptyList
-import bookstore.playground.domain.InvalidEmailAddress
-import bookstore.playground.domain.InvalidMember
-import bookstore.playground.domain.InvalidName
-import bookstore.playground.domain.UnvalidatedEmailAddress
-import bookstore.playground.domain.UnvalidatedMember
-import bookstore.playground.domain.UnvalidatedName
-import bookstore.playground.driver.PostgresMemberDriver
+import bookstore.playground.domain.*
+import bookstore.playground.gateway.MemberGateway
 import bookstore.playground.usecase.RegisterNewMemberError
 import bookstore.playground.usecase.registerNewMemberUsecase
 import io.ktor.http.*
@@ -37,7 +32,7 @@ suspend fun RoutingContext.registerNewMemberHandler() {
     logger.info("Received new member request: $newMemberRequest")
 
     val unvalidatedMember = newMemberRequest.toUnvalidatedMember()
-    val result = registerNewMemberUsecase(PostgresMemberDriver, unvalidatedMember)
+    val result = registerNewMemberUsecase(MemberGateway, unvalidatedMember)
 
     when (result) {
         is Either.Right -> {

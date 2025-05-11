@@ -5,7 +5,7 @@ import arrow.core.EitherNel
 import arrow.core.raise.either
 import arrow.core.raise.ensure
 import arrow.core.raise.zipOrAccumulate
-import bookstore.playground.gateway.MemberGateway
+import bookstore.playground.port.MemberPort
 
 sealed interface InvalidMember {
     data class InvalidMemberName(val invalidName: InvalidName) : InvalidMember
@@ -32,8 +32,8 @@ data class Member private constructor(val name: Name, val emailAddress: EmailAdd
             ) { name, emailAddress -> Member(name, emailAddress) }
         }
 
-        fun registerAsNewMember(memberGateway: MemberGateway, member: Member) {
-            memberGateway.registerNewMember(member)
+        fun registerAsNewMember(memberPort: MemberPort, member: Member) {
+            memberPort.registerNewMember(member)
         }
     }
 

@@ -1,9 +1,13 @@
 package bookstore.playground.gateway
 
 import bookstore.playground.domain.Member
+import bookstore.playground.driver.PostgresMemberDriver
+import bookstore.playground.port.MemberPort
 
-interface MemberGateway {
+object MemberGateway : MemberPort {
 
-    fun registerNewMember(member: Member)
+    override fun registerNewMember(member: Member) {
+        PostgresMemberDriver.insertMember(member)
+    }
 
 }

@@ -6,15 +6,15 @@ import arrow.core.raise.either
 import bookstore.playground.domain.InvalidMember
 import bookstore.playground.domain.Member
 import bookstore.playground.domain.UnvalidatedMember
-import bookstore.playground.gateway.MemberGateway
+import bookstore.playground.port.MemberPort
 
 sealed interface RegisterNewMemberError {
     data class InvalidMemberError(val invalidMemberNel: NonEmptyList<InvalidMember>) : RegisterNewMemberError
 }
 
-fun registerNewMemberUsecase(memberGateway: MemberGateway, unvalidatedMember: UnvalidatedMember): Either<RegisterNewMemberError, Unit> = either {
+fun registerNewMemberUsecase(memberPort: MemberPort, unvalidatedMember: UnvalidatedMember): Either<RegisterNewMemberError, Unit> = either {
     val member = Member.create(unvalidatedMember)
         .mapLeft { RegisterNewMemberError.InvalidMemberError(it) }
         .bind()
-    Member.registerAsNewMember(memberGateway, member)
+    Member.registerAsNewMember(memberPort, member)
 }
