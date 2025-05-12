@@ -6,11 +6,9 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import net.javacrumbs.jsonunit.kotest.equalJson
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.testcontainers.junit.jupiter.Testcontainers
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@Testcontainers
 class RegisterNewMemberTest : E2ETestBase() {
 
     @Test
