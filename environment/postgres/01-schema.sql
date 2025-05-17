@@ -1,4 +1,5 @@
 CREATE TABLE IF NOT EXISTS member (
-    email_address VARCHAR(255) PRIMARY KEY,
+    id UUID PRIMARY KEY,
+    email_address VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL
 );

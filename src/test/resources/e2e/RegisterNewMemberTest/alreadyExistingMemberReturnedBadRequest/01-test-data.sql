@@ -1,1 +1,1 @@
-INSERT INTO member (email_address, name) VALUES ('john.done@example.com', 'John Doe');
+INSERT INTO member (id, email_address, name) VALUES ('37c695e9-54f0-4eb6-98ea-d869f9dc03bb', 'john.done@example.com', 'John Doe');
