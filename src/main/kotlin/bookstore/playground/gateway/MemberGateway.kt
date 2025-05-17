@@ -19,12 +19,14 @@ object MemberGateway : MemberPort {
     override fun getMemberByEmailAddress(emailAddress: EmailAddress) = option {
         val rawEmailAddress = emailAddress.rawEmailAddress
         val memberRow = PostgresMemberDriver.selectMember(rawEmailAddress).bind()
-        Member.create(
-            UnvalidatedMember(
-                UnvalidatedName(memberRow.name),
-                UnvalidatedEmailAddress(memberRow.emailAddress)
-            )
-        ).getOrNull() ?: throw IllegalStateException("Member can't create. Data is invalid. member email address: $rawEmailAddress")
+
+        val memberId = MemberId(memberRow.id)
+        val memberName = Name.create(memberRow.name).getOrNull()
+                ?: throw IllegalStateException("Member can't create. Data is invalid. member name: ${memberRow.name}")
+        val memberEmailAddress = EmailAddress.create(memberRow.emailAddress).getOrNull()
+                ?: throw IllegalStateException("Member can't create. Data is invalid. member email address: $rawEmailAddress")
+
+        Member.create(memberId, memberName, memberEmailAddress)
     }
 
 }

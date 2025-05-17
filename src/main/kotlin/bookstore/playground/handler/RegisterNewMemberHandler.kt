@@ -5,6 +5,7 @@ import arrow.core.NonEmptyList
 import arrow.core.nonEmptyListOf
 import bookstore.playground.domain.*
 import bookstore.playground.gateway.MemberGateway
+import bookstore.playground.gateway.MemberIdGateway
 import bookstore.playground.usecase.RegisterNewMemberError
 import bookstore.playground.usecase.registerNewMemberUsecase
 import io.ktor.http.*
@@ -33,7 +34,7 @@ suspend fun RoutingContext.registerNewMemberHandler() {
     logger.info("Received new member request: $newMemberRequest")
 
     val unvalidatedMember = newMemberRequest.toUnvalidatedMember()
-    val result = registerNewMemberUsecase(MemberGateway, unvalidatedMember)
+    val result = registerNewMemberUsecase(MemberIdGateway, MemberGateway, unvalidatedMember)
 
     when (result) {
         is Either.Right -> {

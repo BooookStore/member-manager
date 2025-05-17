@@ -7,6 +7,7 @@ import arrow.core.raise.ensure
 import bookstore.playground.domain.InvalidMember
 import bookstore.playground.domain.Member
 import bookstore.playground.domain.UnvalidatedMember
+import bookstore.playground.port.MemberIdPort
 import bookstore.playground.port.MemberPort
 
 sealed interface RegisterNewMemberError {
@@ -14,8 +15,8 @@ sealed interface RegisterNewMemberError {
     object MemberAlreadyExistsError : RegisterNewMemberError
 }
 
-fun registerNewMemberUsecase(memberPort: MemberPort, unvalidatedMember: UnvalidatedMember): Either<RegisterNewMemberError, Unit> = either {
-    val member = Member.create(unvalidatedMember)
+fun registerNewMemberUsecase(memberIdPort: MemberIdPort, memberPort: MemberPort, unvalidatedMember: UnvalidatedMember): Either<RegisterNewMemberError, Unit> = either {
+    val member = Member.create(memberIdPort, unvalidatedMember)
         .mapLeft { RegisterNewMemberError.InvalidMemberError(it) }
         .bind()
     ensure(Member.exist(memberPort, member).not()) { RegisterNewMemberError.MemberAlreadyExistsError }
