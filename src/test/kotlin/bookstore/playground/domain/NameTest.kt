@@ -9,7 +9,7 @@ class NameTest {
 
     @Test
     fun nameFromUnvalidatedName() {
-        val name = Name.Companion.create(UnvalidatedName("John Doe"))
+        val name = Name.Companion.create("John Doe")
 
         when (name) {
             is Either.Left -> fail("Expected a Either.Right, but got Either.Left")
@@ -19,7 +19,7 @@ class NameTest {
 
     @Test
     fun invalidNameFromBlank() {
-        val name = Name.create(UnvalidatedName(" "))
+        val name = Name.create(" ")
 
         when (name) {
             is Either.Left -> name.value shouldBe InvalidName.Blank

@@ -6,19 +6,31 @@ import arrow.core.getOrElse
 import arrow.core.nonEmptyListOf
 import arrow.core.none
 import arrow.core.some
+import bookstore.playground.port.MemberIdPort
 import bookstore.playground.port.MemberPort
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
+import java.util.UUID
 import kotlin.test.Test
 import kotlin.test.fail
 
 class MemberTest {
 
+    lateinit var memberIdPort: MemberIdPort
+
+    @BeforeEach
+    fun setUp() {
+        memberIdPort = mockk()
+        every { memberIdPort.generateId() } returns MemberId(UUID.randomUUID())
+    }
+
     @Test
     fun memberFromValidEmailAddressAndName() {
         val member = Member.create(
+            memberIdPort,
             UnvalidatedMember(
                 UnvalidatedName("John Doe"),
                 UnvalidatedEmailAddress("john.doe@example.com")
@@ -37,6 +49,7 @@ class MemberTest {
     @Test
     fun memberFromInvalidName() {
         val member = Member.create(
+            memberIdPort,
             UnvalidatedMember(
                 UnvalidatedName(" "),
                 UnvalidatedEmailAddress("john.doe@example.com")
@@ -52,6 +65,7 @@ class MemberTest {
     @Test
     fun memberFromInvalidNameAndEmailAddress() {
         val member = Member.create(
+            memberIdPort,
             UnvalidatedMember(
                 UnvalidatedName(" "),
                 UnvalidatedEmailAddress("")
@@ -74,6 +88,7 @@ class MemberTest {
         @Test
         fun whenExistReturnTrue() {
             val existingMember = Member.create(
+                memberIdPort,
                 UnvalidatedMember(
                     UnvalidatedName("John Done"),
                     UnvalidatedEmailAddress("john.done@example.com")
@@ -89,6 +104,7 @@ class MemberTest {
         @Test
         fun whenNotExistReturnFalse() {
             val nonExistingMember = Member.create(
+                memberIdPort,
                 UnvalidatedMember(
                     UnvalidatedName("John Done"),
                     UnvalidatedEmailAddress("john.done@example.com")

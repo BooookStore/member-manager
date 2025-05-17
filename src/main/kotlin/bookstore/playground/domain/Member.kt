@@ -22,12 +22,12 @@ data class Member private constructor(val id: MemberId, val name: Name, val emai
             val (unvalidatedName, unvalidatedEmailAddress) = unvalidatedMember
             zipOrAccumulate(
                 {
-                    Name.create(unvalidatedName)
+                    Name.create(unvalidatedName.rawName)
                         .mapLeft { InvalidMember.InvalidMemberName(it) }
                         .bind()
                 },
                 {
-                    EmailAddress.create(unvalidatedEmailAddress)
+                    EmailAddress.create(unvalidatedEmailAddress.rawEmailAddress)
                         .mapLeft { it.map(InvalidMember::InvalidMemberEmailAddress) }
                         .bindNel()
                 }
@@ -59,9 +59,6 @@ sealed interface InvalidEmailAddress {
 data class EmailAddress private constructor(val rawEmailAddress: String) {
 
     companion object {
-        // TODO: Remove
-        fun create(unvalidatedEmailAddress: UnvalidatedEmailAddress): EitherNel<InvalidEmailAddress, EmailAddress> = create(unvalidatedEmailAddress.rawEmailAddress)
-
         fun create(rawEmailAddress: String): EitherNel<InvalidEmailAddress, EmailAddress> = either {
             zipOrAccumulate(
                 { ensure(rawEmailAddress.isNotBlank()) { InvalidEmailAddress.Blank } },
@@ -80,9 +77,6 @@ sealed interface InvalidName {
 data class Name private constructor(val rawName: String) {
 
     companion object {
-        // TODO: Remove
-        fun create(unvalidatedName: UnvalidatedName): Either<InvalidName, Name> = create(unvalidatedName.rawName)
-
         fun create(rawName: String): Either<InvalidName, Name> = either {
             ensure(rawName.isNotBlank()) { InvalidName.Blank }
             Name(rawName)

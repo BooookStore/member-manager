@@ -11,7 +11,7 @@ class EmailAddressTest {
 
     @Test
     fun emailAddressFromUnvalidatedEmailAddress() {
-        val emailAddress = EmailAddress.create(UnvalidatedEmailAddress("john.done@example.com"))
+        val emailAddress = EmailAddress.create("john.done@example.com")
 
         when (emailAddress) {
             is Left -> fail("Expected a Either.Right, but got Either.Left")
@@ -21,7 +21,7 @@ class EmailAddressTest {
 
     @Test
     fun invalidEmailAddressFromBlank() {
-        val emailAddress = EmailAddress.create(UnvalidatedEmailAddress(""))
+        val emailAddress = EmailAddress.create("")
 
         when (emailAddress) {
             is Left -> emailAddress.value shouldBe nonEmptyListOf(InvalidEmailAddress.Blank, InvalidEmailAddress.UnexpectedDomain)
@@ -31,7 +31,7 @@ class EmailAddressTest {
 
     @Test
     fun invalidEmailAddressFromNotExampleComDomain() {
-        val emailAddress = EmailAddress.create(UnvalidatedEmailAddress("john.done@xample.com"))
+        val emailAddress = EmailAddress.create("john.done@xample.com")
 
         when (emailAddress) {
             is Left -> emailAddress.value shouldBe nonEmptyListOf(InvalidEmailAddress.UnexpectedDomain)
@@ -41,7 +41,7 @@ class EmailAddressTest {
 
     @Test
     fun invalidEmailAddressFromEmptyAtSymbol() {
-        val emailAddress = EmailAddress.create(UnvalidatedEmailAddress("john.done"))
+        val emailAddress = EmailAddress.create("john.done")
 
         when (emailAddress) {
             is Left -> emailAddress.value shouldBe nonEmptyListOf(InvalidEmailAddress.UnexpectedDomain)
