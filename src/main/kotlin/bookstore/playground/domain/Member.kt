@@ -18,7 +18,7 @@ sealed interface InvalidMember {
 data class Member private constructor(val id: MemberId, val name: Name, val emailAddress: EmailAddress) {
 
     companion object {
-        fun create(memberIdPort: MemberIdPort, unvalidatedMember: UnvalidatedMember): EitherNel<InvalidMember, Member> = either {
+        fun createNew(memberIdPort: MemberIdPort, unvalidatedMember: UnvalidatedMember): EitherNel<InvalidMember, Member> = either {
             val (unvalidatedName, unvalidatedEmailAddress) = unvalidatedMember
             zipOrAccumulate(
                 {

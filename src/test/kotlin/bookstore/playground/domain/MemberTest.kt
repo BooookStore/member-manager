@@ -29,7 +29,7 @@ class MemberTest {
 
     @Test
     fun memberFromValidEmailAddressAndName() {
-        val member = Member.create(
+        val member = Member.createNew(
             memberIdPort,
             UnvalidatedMember(
                 UnvalidatedName("John Doe"),
@@ -48,7 +48,7 @@ class MemberTest {
 
     @Test
     fun memberFromInvalidName() {
-        val member = Member.create(
+        val member = Member.createNew(
             memberIdPort,
             UnvalidatedMember(
                 UnvalidatedName(" "),
@@ -64,7 +64,7 @@ class MemberTest {
 
     @Test
     fun memberFromInvalidNameAndEmailAddress() {
-        val member = Member.create(
+        val member = Member.createNew(
             memberIdPort,
             UnvalidatedMember(
                 UnvalidatedName(" "),
@@ -87,7 +87,7 @@ class MemberTest {
 
         @Test
         fun whenExistReturnTrue() {
-            val existingMember = Member.create(
+            val existingMember = Member.createNew(
                 memberIdPort,
                 UnvalidatedMember(
                     UnvalidatedName("John Done"),
@@ -103,7 +103,7 @@ class MemberTest {
 
         @Test
         fun whenNotExistReturnFalse() {
-            val nonExistingMember = Member.create(
+            val nonExistingMember = Member.createNew(
                 memberIdPort,
                 UnvalidatedMember(
                     UnvalidatedName("John Done"),

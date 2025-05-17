@@ -16,7 +16,7 @@ sealed interface RegisterNewMemberError {
 }
 
 fun registerNewMemberUsecase(memberIdPort: MemberIdPort, memberPort: MemberPort, unvalidatedMember: UnvalidatedMember): Either<RegisterNewMemberError, Unit> = either {
-    val member = Member.create(memberIdPort, unvalidatedMember)
+    val member = Member.createNew(memberIdPort, unvalidatedMember)
         .mapLeft { RegisterNewMemberError.InvalidMemberError(it) }
         .bind()
     ensure(Member.exist(memberPort, member).not()) { RegisterNewMemberError.MemberAlreadyExistsError }
