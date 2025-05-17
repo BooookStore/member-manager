@@ -6,6 +6,8 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import net.javacrumbs.jsonunit.kotest.equalJson
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.junit.jupiter.api.assertDoesNotThrow
+import java.util.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -34,6 +36,7 @@ class RegisterNewMemberTest : E2ETestBase() {
                 result.next()
                 assertEquals("John Doe", result.getString("name"))
                 assertEquals("john.done@example.com", result.getString("email_address"))
+                assertDoesNotThrow { UUID.fromString(result.getString("id")) }
             }
         }
     }
