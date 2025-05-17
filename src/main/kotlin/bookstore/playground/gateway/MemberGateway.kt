@@ -5,13 +5,15 @@ import bookstore.playground.domain.*
 import bookstore.playground.driver.InsertMemberRow
 import bookstore.playground.driver.PostgresMemberDriver
 import bookstore.playground.port.MemberPort
+import java.util.UUID
 
 object MemberGateway : MemberPort {
 
     override fun registerNewMember(member: Member) {
+        val id = UUID.randomUUID()
         val rawName = member.name.rawName
         val rawEmailAddress = member.emailAddress.rawEmailAddress
-        PostgresMemberDriver.insertMember(InsertMemberRow(rawEmailAddress, rawName))
+        PostgresMemberDriver.insertMember(InsertMemberRow(id, rawEmailAddress, rawName))
     }
 
     override fun getMemberByEmailAddress(emailAddress: EmailAddress) = option {
