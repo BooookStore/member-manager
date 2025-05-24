@@ -4,6 +4,7 @@ import arrow.core.None
 import arrow.core.Option
 import arrow.core.Some
 import bookstore.playground.domain.MemberId
+import bookstore.playground.gateway.MemberGateway
 import bookstore.playground.usecase.getMemberUsecase
 import io.ktor.http.*
 import io.ktor.server.response.*
@@ -21,7 +22,7 @@ suspend fun RoutingContext.getMemberHandler() {
         Option
             .catch { UUID.fromString(id) }
             .map { MemberId(it) }
-            .map { getMemberUsecase(it) }
+            .map { getMemberUsecase(MemberGateway, it) }
 
     when (memberId) {
         is None -> call.respond(HttpStatusCode.BadRequest)

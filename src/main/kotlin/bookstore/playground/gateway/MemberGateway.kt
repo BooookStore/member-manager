@@ -1,11 +1,14 @@
 package bookstore.playground.gateway
 
 import arrow.core.raise.option
-import bookstore.playground.domain.*
+import bookstore.playground.domain.EmailAddress
+import bookstore.playground.domain.Member
+import bookstore.playground.domain.MemberId
+import bookstore.playground.domain.Name
 import bookstore.playground.driver.InsertMemberRow
 import bookstore.playground.driver.PostgresMemberDriver
 import bookstore.playground.port.MemberPort
-import java.util.UUID
+import java.util.*
 
 object MemberGateway : MemberPort {
 
@@ -27,6 +30,10 @@ object MemberGateway : MemberPort {
                 ?: throw IllegalStateException("Member can't create. Data is invalid. member email address: $rawEmailAddress")
 
         Member.create(memberId, memberName, memberEmailAddress)
+    }
+
+    override fun getMemberById(memberId: MemberId): MemberId {
+        return memberId
     }
 
 }
