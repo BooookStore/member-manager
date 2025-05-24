@@ -5,7 +5,11 @@ import bookstore.playground.domain.MemberId
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.serialization.Serializable
 import java.util.*
+
+@Serializable
+data class GetMemberResponse(val id: String)
 
 suspend fun RoutingContext.getMemberHandler() {
     val id = call.parameters["id"] ?: throw Exception("Member ID not found")
@@ -20,5 +24,5 @@ suspend fun RoutingContext.getMemberHandler() {
         return
     }
 
-    call.respond(HttpStatusCode.OK, memberId.getOrNull()?.rawId?.toString() ?: TODO())
+    call.respond(HttpStatusCode.OK, GetMemberResponse(id))
 }
