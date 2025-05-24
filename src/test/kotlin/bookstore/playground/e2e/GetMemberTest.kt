@@ -17,4 +17,12 @@ class GetMemberTest : E2ETestBase() {
         }
     }
 
+    @Test
+    fun getMemberWithInvalidId() = testApplicationWithCommonSetup { client ->
+        client.get("/members/invalid-id")
+        .apply {
+            status shouldBe HttpStatusCode.BadRequest
+        }
+    }
+
 }
