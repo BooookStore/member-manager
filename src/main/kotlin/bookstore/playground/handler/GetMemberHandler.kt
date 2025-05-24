@@ -20,5 +20,5 @@ suspend fun RoutingContext.getMemberHandler() {
         return
     }
 
-    call.respond(HttpStatusCode.OK, id)
+    call.respond(HttpStatusCode.OK, memberId.getOrNull()?.rawId?.toString() ?: TODO())
 }
