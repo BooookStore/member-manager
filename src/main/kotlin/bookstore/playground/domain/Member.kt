@@ -55,9 +55,8 @@ sealed interface InvalidEmailAddress {
     object UnexpectedDomain : InvalidEmailAddress
 }
 
-@ConsistentCopyVisibility
-data class EmailAddress private constructor(val rawEmailAddress: String) {
-
+@JvmInline
+value class EmailAddress private constructor(val rawEmailAddress: String) {
     companion object {
         fun create(rawEmailAddress: String): EitherNel<InvalidEmailAddress, EmailAddress> = either {
             zipOrAccumulate(
@@ -66,21 +65,18 @@ data class EmailAddress private constructor(val rawEmailAddress: String) {
             ) { _, _ -> EmailAddress(rawEmailAddress) }
         }
     }
-
 }
 
 sealed interface InvalidName {
     object Blank : InvalidName
 }
 
-@ConsistentCopyVisibility
-data class Name private constructor(val rawName: String) {
-
+@JvmInline
+value class Name private constructor(val rawName: String) {
     companion object {
         fun create(rawName: String): Either<InvalidName, Name> = either {
             ensure(rawName.isNotBlank()) { InvalidName.Blank }
             Name(rawName)
         }
     }
-
 }
