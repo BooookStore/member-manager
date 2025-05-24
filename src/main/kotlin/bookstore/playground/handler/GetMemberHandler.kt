@@ -1,6 +1,8 @@
 package bookstore.playground.handler
 
+import arrow.core.None
 import arrow.core.Option
+import arrow.core.Some
 import bookstore.playground.domain.MemberId
 import io.ktor.http.*
 import io.ktor.server.response.*
@@ -19,10 +21,8 @@ suspend fun RoutingContext.getMemberHandler() {
             .catch { UUID.fromString(id) }
             .map { MemberId(it) }
 
-    if (memberId.isNone()) {
-        call.respond(HttpStatusCode.BadRequest)
-        return
+    when (memberId) {
+        is None -> call.respond(HttpStatusCode.BadRequest)
+        is Some -> call.respond(HttpStatusCode.OK, GetMemberResponse(memberId.value.rawId.toString()))
     }
-
-    call.respond(HttpStatusCode.OK, GetMemberResponse(id))
 }
