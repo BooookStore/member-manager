@@ -12,7 +12,7 @@ fun Application.configureRouting() {
             registerNewMemberHandler()
         }
         get("/members/{id}") {
-            val id = call.parameters["id"] ?: TODO()
+            val id = call.parameters["id"] ?: throw Exception("Member ID not found")
             call.respond(HttpStatusCode.OK, id)
         }
     }
