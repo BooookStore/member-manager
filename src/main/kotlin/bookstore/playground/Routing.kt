@@ -12,7 +12,8 @@ fun Application.configureRouting() {
             registerNewMemberHandler()
         }
         get("/members/{id}") {
-            call.respond(HttpStatusCode.OK, "1bfafdec-16e5-4ff8-a8ab-146e0e6bb215")
+            val id = call.parameters["id"] ?: TODO()
+            call.respond(HttpStatusCode.OK, id)
         }
     }
 }
