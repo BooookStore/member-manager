@@ -1,5 +1,6 @@
 package bookstore.playground
 
+import bookstore.playground.handler.getMemberHandler
 import bookstore.playground.handler.registerNewMemberHandler
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -12,8 +13,7 @@ fun Application.configureRouting() {
             registerNewMemberHandler()
         }
         get("/members/{id}") {
-            val id = call.parameters["id"] ?: throw Exception("Member ID not found")
-            call.respond(HttpStatusCode.OK, id)
+            getMemberHandler()
         }
     }
 }
